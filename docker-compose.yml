@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  api:
+    image: golang_echo_api:latest
+    volumes:
+      - "./api:/app"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  fe:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+    command: sh -c "npm run dev"
+    stdin_open: true
+  db:
+    image: postgres:14.6
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "go_echo"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      # - ./sql/migrations:/docker-entrypoint-initdb.d
+volumes:
+  db-data:
