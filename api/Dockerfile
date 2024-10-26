@@ -14,6 +14,6 @@ CMD ["air"]
 FROM alpine:latest AS production
 WORKDIR /app
 COPY --from=base /base/main .
-COPY ./api/.env .
+COPY .env .
 EXPOSE 8080
 CMD ["/app/main"]
