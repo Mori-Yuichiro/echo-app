@@ -1,15 +1,18 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/labstack/echo/v4"
+	"go-rest-api/controller"
+	"go-rest-api/db"
+	"go-rest-api/repository"
+	"go-rest-api/router"
+	"go-rest-api/usecase"
 )
 
 func main() {
-	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	db := db.NewDB()
+	userRepository := repository.NewUserRepository(db)
+	userUsecase := usecase.NewUserUsecase(userRepository)
+	userController := controller.NewUserController(userUsecase)
+	e := router.NewRouter(userController)
 	e.Logger.Fatal(e.Start(":8080"))
 }
