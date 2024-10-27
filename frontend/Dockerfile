@@ -1,2 +1,2 @@
 FROM node:23-alpine
-WORKDIR /frontend
+WORKDIR /frontend/fe
