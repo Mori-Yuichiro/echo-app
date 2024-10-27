@@ -13,10 +13,16 @@ func main() {
 	db := db.NewDB()
 
 	userValidator := validator.NewUserValidator()
+	tweetValidator := validator.NewTweetValidator()
 
 	userRepository := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
 	userController := controller.NewUserController(userUsecase)
-	e := router.NewRouter(userController)
+
+	tweetRepository := repository.NewTweetRepository(db)
+	tweetUsecase := usecase.NewTweetUsecase(tweetRepository, tweetValidator)
+	tweetController := controller.NewTweetController(tweetUsecase)
+
+	e := router.NewRouter(userController, tweetController)
 	e.Logger.Fatal(e.Start(":8080"))
 }
