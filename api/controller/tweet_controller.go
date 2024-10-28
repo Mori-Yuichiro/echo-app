@@ -30,7 +30,11 @@ func (tc *tweetController) GetAllTweets(c echo.Context) error {
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 
-	tweetRes, err := tc.tu.GetAllTweets(uint(userId.(float64)))
+	if userId == nil {
+		return c.JSON(http.StatusInternalServerError, "you don't userId")
+	}
+
+	tweetRes, err := tc.tu.GetAllTweets()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
@@ -42,10 +46,14 @@ func (tc *tweetController) GetTweetById(c echo.Context) error {
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 
+	if userId == nil {
+		return c.JSON(http.StatusInternalServerError, "you don't userId")
+	}
+
 	id := c.Param("tweetId")
 	tweetId, _ := strconv.Atoi(id)
 
-	tweetRes, err := tc.tu.GetTweetById(uint(userId.(float64)), uint(tweetId))
+	tweetRes, err := tc.tu.GetTweetById(uint(tweetId))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

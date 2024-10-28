@@ -7,8 +7,8 @@ import (
 )
 
 type ITweetUsecase interface {
-	GetAllTweets(userId uint) ([]model.TweetResponse, error)
-	GetTweetById(userId uint, tweetId uint) (model.TweetResponse, error)
+	GetAllTweets() ([]model.TweetResponse, error)
+	GetTweetById(tweetId uint) (model.TweetResponse, error)
 	CreateTweet(tweet model.Tweet) (model.TweetResponse, error)
 	DeleteTweet(userId uint, tweetId uint) error
 }
@@ -22,9 +22,9 @@ func NewTweetUsecase(tr repository.ITweetRepository, tv validator.ITweetValidato
 	return &tweetUsecase{tr, tv}
 }
 
-func (tu *tweetUsecase) GetAllTweets(userId uint) ([]model.TweetResponse, error) {
+func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 	tweets := []model.Tweet{}
-	if err := tu.tr.GetAllTweets(&tweets, userId); err != nil {
+	if err := tu.tr.GetAllTweets(&tweets); err != nil {
 		return []model.TweetResponse{}, err
 	}
 
@@ -33,6 +33,7 @@ func (tu *tweetUsecase) GetAllTweets(userId uint) ([]model.TweetResponse, error)
 		t := model.TweetResponse{
 			ID:        v.ID,
 			Content:   v.Content,
+			User:      v.User,
 			CreatedAt: v.CreatedAt,
 			UpdatedAt: v.UpdatedAt,
 		}
@@ -41,15 +42,16 @@ func (tu *tweetUsecase) GetAllTweets(userId uint) ([]model.TweetResponse, error)
 	return resTweets, nil
 }
 
-func (tu *tweetUsecase) GetTweetById(userId uint, tweetId uint) (model.TweetResponse, error) {
+func (tu *tweetUsecase) GetTweetById(tweetId uint) (model.TweetResponse, error) {
 	tweet := model.Tweet{}
-	if err := tu.tr.GetTweetById(&tweet, userId, tweetId); err != nil {
+	if err := tu.tr.GetTweetById(&tweet, tweetId); err != nil {
 		return model.TweetResponse{}, err
 	}
 
 	resTweet := model.TweetResponse{
 		ID:        tweet.ID,
 		Content:   tweet.Content,
+		User:      tweet.User,
 		CreatedAt: tweet.CreatedAt,
 		UpdatedAt: tweet.UpdatedAt,
 	}

@@ -8,8 +8,8 @@ import (
 )
 
 type ITweetRepository interface {
-	GetAllTweets(tweet *[]model.Tweet, userId uint) error
-	GetTweetById(tweet *model.Tweet, userId uint, tweetId uint) error
+	GetAllTweets(tweet *[]model.Tweet) error
+	GetTweetById(tweet *model.Tweet, tweetId uint) error
 	CreateTweet(tweet *model.Tweet) error
 	DeleteTweet(userId uint, tweetId uint) error
 }
@@ -22,15 +22,16 @@ func NewTweetRepository(db *gorm.DB) ITweetRepository {
 	return &tweetRepository{db}
 }
 
-func (tr *tweetRepository) GetAllTweets(tweet *[]model.Tweet, userId uint) error {
-	if err := tr.db.Joins("User").Where("user_id=?", userId).Order("created_at").Find(tweet).Error; err != nil {
+func (tr *tweetRepository) GetAllTweets(tweet *[]model.Tweet) error {
+	if err := tr.db.Joins("User").Order("created_at").Find(tweet).Error; err != nil {
+		// if err := tr.db.Order("created_at").Find(tweet).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (tr *tweetRepository) GetTweetById(tweet *model.Tweet, userId uint, tweetId uint) error {
-	if err := tr.db.Joins("User").Where("user_id=?", userId).Order("created_at").First(tweet, tweetId).Error; err != nil {
+func (tr *tweetRepository) GetTweetById(tweet *model.Tweet, tweetId uint) error {
+	if err := tr.db.Joins("User").Order("created_at").First(tweet, tweetId).Error; err != nil {
 		return err
 	}
 	return nil
