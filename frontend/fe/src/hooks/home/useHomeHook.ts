@@ -1,10 +1,10 @@
 import { useState } from "react"
 
 export const useHomeHook = () => {
-    const [openRegisterModal, setOpenRegisterModal] = useState<boolean>(false);
+    const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
 
     return {
-        openRegisterModal,
-        setOpenRegisterModal
+        openLoginModal,
+        setOpenLoginModal
     };
 }

@@ -1,11 +1,14 @@
 "use client"
 
 import Button from "@/components/Button";
-import RegisterModal from "@/components/modal/RegisterModal";
+import LoginModal from "@/components/modal/LoginModal";
 import { useHomeHook } from "@/hooks/home/useHomeHook";
 
 export default function Home() {
-  const { openRegisterModal, setOpenRegisterModal } = useHomeHook();
+  const {
+    openLoginModal,
+    setOpenLoginModal
+  } = useHomeHook();
 
   return (
     <>
@@ -20,17 +23,19 @@ export default function Home() {
             className="w-2/5 py-1 bg-cyan-400 rounded-full"
             disabled
           >アカウントを作成</Button>
-          <h1>アカウントをお持ちの場合</h1>
-          <Button
-            className="w-2/5 py-1 border border-black rounded-full hover:bg-slate-300 hover:text-white"
-            onClick={() => setOpenRegisterModal(!openRegisterModal)}
-          >ログイン</Button>
+          <div className="space-y-3">
+            <h1>アカウントをお持ちの場合</h1>
+            <Button
+              className="w-2/5 py-1 border border-black rounded-full hover:bg-slate-300 hover:text-white"
+              onClick={() => setOpenLoginModal(!openLoginModal)}
+            >ログイン</Button>
+          </div>
         </div>
       </main>
-      {openRegisterModal &&
-        <RegisterModal
-          openRegisterModal={openRegisterModal}
-          setOpenRegisterModal={setOpenRegisterModal}
+      {openLoginModal &&
+        <LoginModal
+          openLoginModal={openLoginModal}
+          setOpenLoginModal={setOpenLoginModal}
         />
       }
     </>
