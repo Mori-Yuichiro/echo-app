@@ -38,38 +38,34 @@ export default function LoginModal({
                                     {value && <p className="text-red-500">{value.message}</p>}
                                 </div>
                             ))}
-                            <form
-                                className="space-y-2"
-                                onSubmit={handleSubmit(onSubmit)}
+                            <div className="flex flex-col gap-y-3">
+                                <input
+                                    id="email"
+                                    className="border border-slate-400 rounded-sm p-3"
+                                    type="email"
+                                    placeholder="email"
+                                    {...register("email")}
+                                />
+                                <input
+                                    id="password"
+                                    className="border border-slate-400 rounded-sm p-3"
+                                    type="password"
+                                    placeholder="password"
+                                    {...register("password")}
+                                />
+                            </div>
+                            <Button
+                                className="border rounded-full px-3 py-1 w-full bg-blue-400 hover:bg-cyan-600 hover:text-white"
+                                onClick={handleSubmit(onSubmit)}
                             >
-                                <div className="flex flex-col gap-y-3">
-                                    <input
-                                        id="email"
-                                        className="border border-slate-400 rounded-sm p-3"
-                                        type="email"
-                                        placeholder="email"
-                                        {...register("email")}
-                                    />
-                                    <input
-                                        id="password"
-                                        className="border border-slate-400 rounded-sm p-3"
-                                        type="password"
-                                        placeholder="password"
-                                        {...register("password")}
-                                    />
-                                </div>
-                                <Button
-                                    className="border rounded-full px-3 py-1 w-full bg-blue-400 hover:bg-cyan-600 hover:text-white"
-                                >
-                                    {isLoading ? <svg className="animate-spin mx-auto" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M13 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0ZM7.34 6.34a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm11.32 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm0 11.32a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm-11.32 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0ZM21 12a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm-8 8a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm-8-8a1 1 0 1 1-2 0a1 1 0 0 1 2 0Z" /></svg> :
-                                        "Login"
-                                    }
-                                </Button>
-                            </form>
+                                {isLoading ? <svg className="animate-spin mx-auto" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeWidth="2" d="M13 4a1 1 0 1 1-2 0a1 1 0 0 1 2 0ZM7.34 6.34a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm11.32 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm0 11.32a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm-11.32 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0ZM21 12a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm-8 8a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm-8-8a1 1 0 1 1-2 0a1 1 0 0 1 2 0Z" /></svg> :
+                                    "Login"
+                                }
+                            </Button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
