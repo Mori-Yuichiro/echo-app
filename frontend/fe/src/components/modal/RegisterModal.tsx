@@ -1,13 +1,22 @@
 import { Dispatch, SetStateAction } from "react";
 import Button from "../Button";
+import { useRegisterModalHook } from "@/hooks/modal/useRegisterModalHook";
 
-export default function LoginModal({
+export default function RegisterModal({
     openRegisterModal,
     setOpenRegisterModal
 }: {
     openRegisterModal: boolean,
     setOpenRegisterModal: Dispatch<SetStateAction<boolean>>
 }) {
+    const {
+        errorMsg,
+        register,
+        handleSubmit,
+        errors,
+        onSubmit
+    } = useRegisterModalHook();
+
     return (
         <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -24,28 +33,38 @@ export default function LoginModal({
                                     <h1 className="text-lg">New Account</h1>
                                 </div>
                             </div>
+                            {errorMsg && <p className="text-red-500">{errorMsg}</p>}
+                            {Object.entries(errors).map(([key, value]) => (
+                                <div key={key}>
+                                    {value && <p className="text-red-500">{value.message}</p>}
+                                </div>
+                            ))}
                             <div className="flex flex-col gap-y-3">
                                 <input
                                     id="name"
                                     className="border border-slate-400 rounded-sm p-3"
                                     type="text"
                                     placeholder="Name"
+                                    {...register("name")}
                                 />
                                 <input
                                     id="email"
                                     className="border border-slate-400 rounded-sm p-3"
                                     type="email"
                                     placeholder="email"
+                                    {...register("email")}
                                 />
                                 <input
                                     id="password"
                                     className="border border-slate-400 rounded-sm p-3"
                                     type="password"
                                     placeholder="password"
+                                    {...register("password")}
                                 />
                             </div>
                             <Button
                                 className="border rounded-full px-3 w-full bg-blue-400 hover:bg-cyan-600 hover:text-white"
+                                onClick={handleSubmit(onSubmit)}
                             >Register</Button>
                         </div>
                     </div>

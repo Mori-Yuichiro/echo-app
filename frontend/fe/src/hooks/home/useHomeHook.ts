@@ -1,11 +1,10 @@
+import { CsrfToken } from "@/app/types/csrf";
 import axios from "axios";
 import { useEffect, useState } from "react"
 
-type CsrfToken = {
-    csrf_token: string;
-}
 
 export const useHomeHook = () => {
+    const [openRegisterModal, setOpenRegisterModal] = useState<boolean>(false);
     const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
 
     useEffect(() => {
@@ -18,6 +17,8 @@ export const useHomeHook = () => {
     }, [])
 
     return {
+        openRegisterModal,
+        setOpenRegisterModal,
         openLoginModal,
         setOpenLoginModal
     };
