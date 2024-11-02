@@ -5,8 +5,10 @@ import (
 	"go-rest-api/usecase"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,6 +17,7 @@ type IUserController interface {
 	LogIn(c echo.Context) error
 	LogOut(c echo.Context) error
 	CsrfToken(c echo.Context) error
+	GetUserById(c echo.Context) error
 }
 
 type userController struct {
@@ -85,4 +88,25 @@ func (uc *userController) CsrfToken(c echo.Context) error {
 	return c.JSON(http.StatusOK, echo.Map{
 		"csrf_token": token,
 	})
+}
+
+func (uc *userController) GetUserById(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	userId := claims["user_id"]
+
+	if userId == nil {
+		return c.JSON(http.StatusInternalServerError, "you don't userId")
+	}
+
+	userId, err := strconv.ParseFloat(c.Param("userId"), 64)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "param user_id can't be changed float64")
+	}
+
+	userRes, err := uc.uu.GetUserById(uint(userId.(float64)))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, userRes)
 }
