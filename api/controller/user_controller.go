@@ -18,6 +18,7 @@ type IUserController interface {
 	LogOut(c echo.Context) error
 	CsrfToken(c echo.Context) error
 	GetUserById(c echo.Context) error
+	GetUserIdByToken(c echo.Context) error
 }
 
 type userController struct {
@@ -109,4 +110,16 @@ func (uc *userController) GetUserById(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, userRes)
+}
+
+func (uc *userController) GetUserIdByToken(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	userId := claims["user_id"]
+
+	if userId == nil {
+		return c.JSON(http.StatusInternalServerError, "you don't userId")
+	}
+
+	return c.JSON(http.StatusOK, userId)
 }
