@@ -46,6 +46,14 @@ func NewRouter(uc controller.IUserController, tc controller.ITweetController) *e
 	e.POST("/logout", uc.LogOut)
 	e.GET("/csrf", uc.CsrfToken)
 
+	u := e.Group("/users")
+	u.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	u.GET("", uc.GetUserIdByToken)
+	u.GET("/:userId", uc.GetUserById)
+
 	t := e.Group("/tweets")
 	t.Use(echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(os.Getenv("SECRET")),
