@@ -3,6 +3,7 @@ module go-rest-api
 go 1.21.3
 
 require (
+	github.com/cloudinary/cloudinary-go/v2 v2.9.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/joho/godotenv v1.5.1
@@ -16,7 +17,10 @@ require (
 require github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496 // indirect
 
 require (
+	github.com/creasty/defaults v1.7.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+	github.com/google/uuid v1.5.0 // indirect
+	github.com/gorilla/schema v1.4.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgx/v5 v5.5.5 // indirect
