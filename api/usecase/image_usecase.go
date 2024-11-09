@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"fmt"
 	"go-rest-api/model"
 	"go-rest-api/repository"
 )
@@ -23,7 +22,6 @@ func (iu *imageUsecase) UploadImage(image model.Image) (model.ImageResponse, err
 	if err != nil {
 		return model.ImageResponse{}, err
 	}
-	fmt.Println(uploadResult.URL)
 	resImageUrl := model.ImageResponse{
 		ImageUrl: uploadResult.URL,
 	}

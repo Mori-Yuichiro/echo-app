@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"encoding/json"
 	"go-rest-api/model"
 	"go-rest-api/repository"
 	"go-rest-api/validator"
@@ -30,14 +31,32 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 
 	resTweets := []model.TweetResponse{}
 	for _, v := range tweets {
-		t := model.TweetResponse{
-			ID:        v.ID,
-			Content:   v.Content,
-			User:      v.User,
-			CreatedAt: v.CreatedAt,
-			UpdatedAt: v.UpdatedAt,
+		if v.ImageUrls != "" {
+			var image_urls []string
+			err := json.Unmarshal([]byte(v.ImageUrls), &image_urls)
+			if err != nil {
+				return []model.TweetResponse{}, err
+			}
+
+			t := model.TweetResponse{
+				ID:        v.ID,
+				Content:   v.Content,
+				ImageUrls: image_urls,
+				User:      v.User,
+				CreatedAt: v.CreatedAt,
+				UpdatedAt: v.UpdatedAt,
+			}
+			resTweets = append(resTweets, t)
+		} else {
+			t := model.TweetResponse{
+				ID:        v.ID,
+				Content:   v.Content,
+				User:      v.User,
+				CreatedAt: v.CreatedAt,
+				UpdatedAt: v.UpdatedAt,
+			}
+			resTweets = append(resTweets, t)
 		}
-		resTweets = append(resTweets, t)
 	}
 	return resTweets, nil
 }
