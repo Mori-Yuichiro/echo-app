@@ -33,6 +33,23 @@ export default function Tweet({ tweet }: { tweet: TweetType }) {
                             <p>{tweet.content}</p>
                         </Link>
                     )}
+                    {(tweet.image_urls && tweet.image_urls.length > 0) &&
+                        <div className={`gap-x-4 gap-y-3 grid ${tweet.image_urls.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
+                            {tweet.image_urls.map(imageUrl => {
+                                return (
+                                    <div key={imageUrl} className={(tweet.image_urls.length > 0) ? "w-1/2" : undefined}>
+                                        <Link
+                                            href={imageUrl}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            <img src={imageUrl} alt="ツイート画像" />
+                                        </Link>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    }
                 </div>
             </div>
             <div className="flex justify-between ml-8">

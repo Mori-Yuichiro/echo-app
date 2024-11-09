@@ -8,6 +8,7 @@ RUN go build -o main /base/main.go
 FROM golang:1.23 AS dev
 WORKDIR /app
 COPY --from=base /base .
+ENV GO_ENV=dev
 RUN go install github.com/air-verse/air@latest
 CMD ["air"]
 

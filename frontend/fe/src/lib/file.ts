@@ -17,7 +17,9 @@ export const fileUpload = (inputRef: MutableRefObject<HTMLInputElement | null>) 
 }
 
 export const uploadImage = async (instance: AxiosInstance, imageData: string | ArrayBuffer | null) => {
-    return await instance.post('api/image-upload', {
+    return await instance.post('/image-upload', {
         imageData
-    });
+    },
+        { withCredentials: true }
+    );
 }

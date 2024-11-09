@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func NewRouter(uc controller.IUserController, tc controller.ITweetController) *echo.Echo {
+func NewRouter(uc controller.IUserController, ic controller.IImageController, tc controller.ITweetController) *echo.Echo {
 	e := echo.New()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -53,6 +53,13 @@ func NewRouter(uc controller.IUserController, tc controller.ITweetController) *e
 	}))
 	u.GET("", uc.GetUserIdByToken)
 	u.GET("/:userId", uc.GetUserById)
+
+	i := e.Group("/image-upload")
+	i.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	i.POST("", ic.UploadImage)
 
 	t := e.Group("/tweets")
 	t.Use(echojwt.WithConfig(echojwt.Config{

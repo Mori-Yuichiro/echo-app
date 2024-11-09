@@ -2,12 +2,11 @@ import { ImageType } from "@/app/types/image";
 import { TweetType } from "@/app/types/tweet";
 import axiosInstance from "@/lib/axiosInstance";
 import { getCsrfToken } from "@/lib/csrf_lib";
-import { fileRead, fileUpload } from "@/lib/file";
+import { fileRead, fileUpload, uploadImage } from "@/lib/file";
 import { tweetPatchSchema, TweetPatchSchemaType } from "@/lib/validation/tweet";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleReload } from "@/store/slice/slice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuid } from "uuid";
@@ -53,6 +52,21 @@ export const useToppageHook = () => {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const fileOnClick = fileUpload(inputRef);
 
+    const deleteDisplayImage = (mediaStr: string) => {
+        const selectImage = images.find(image => image.mediaString === mediaStr);
+        // 表示する画像を削除
+        const updateImages = images.filter(image => image !== selectImage);
+        setImages(updateImages);
+        // 削除した画像を保存用データから削除
+        const updateImageData = imageDatas.filter(imageData => imageData !== selectImage?.data);
+        setImageDatas(updateImageData);
+    }
+
+    const resetImages = () => {
+        setImages([]);
+        setImageDatas([]);
+    }
+
     const onSubmit = async (data: TweetPatchSchemaType) => {
         try {
             if (instance.defaults.headers.common["X-CSRF-Token"] === undefined) {
@@ -60,14 +74,37 @@ export const useToppageHook = () => {
                 instance.defaults.headers.common["X-CSRF-Token"] = csrf;
             }
 
-            const { status } = await instance.post<TweetType>(
-                "/tweets",
-                data,
-                { withCredentials: true }
-            );
-            if (status === 200) {
-                dispatch(toggleReload(!reload));
-                reset({ content: "" });
+            if (images.length > 0) {
+                const imageUrls: string[] = await Promise.all(imageDatas.map(async (imageData) => {
+                    const imageUrl = await uploadImage(instance, imageData);
+                    return imageUrl.data.ImageUrl;
+                }));
+
+                const imageString = JSON.stringify(imageUrls);
+
+                const { status } = await instance.post<TweetType>(
+                    "/tweets",
+                    {
+                        ...data,
+                        image_urls: imageString
+                    },
+                    { withCredentials: true }
+                );
+                if (status === 200) {
+                    dispatch(toggleReload(!reload));
+                    resetImages();
+                    reset({ content: "" });
+                }
+            } else {
+                const { status } = await instance.post<TweetType>(
+                    "/tweets",
+                    data,
+                    { withCredentials: true }
+                );
+                if (status === 200) {
+                    dispatch(toggleReload(!reload));
+                    reset({ content: "" });
+                }
             }
         } catch (err) {
             reset({ content: "" });
@@ -103,6 +140,7 @@ export const useToppageHook = () => {
         inputRef,
         fileOnClick,
         fileInput,
-        images
+        images,
+        deleteDisplayImage
     };
 }
