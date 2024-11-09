@@ -64,7 +64,7 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 	}
 
 	storedUser := model.User{}
-	if err := uu.ur.GetUesrByEmail(&storedUser, user.Email); err != nil {
+	if err := uu.ur.GetUserByEmail(&storedUser, user.Email); err != nil {
 		return "", err
 	}
 	err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password))
@@ -85,7 +85,7 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 
 func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 	user := model.User{}
-	if err := uu.ur.GetUesrById(&user, id); err != nil {
+	if err := uu.ur.GetUserById(&user, id); err != nil {
 		return model.UserResponse{}, err
 	}
 
