@@ -67,9 +67,18 @@ func (tu *tweetUsecase) GetTweetById(tweetId uint) (model.TweetResponse, error) 
 		return model.TweetResponse{}, err
 	}
 
+	var image_urls []string
+	if tweet.ImageUrls != "" {
+		err := json.Unmarshal([]byte(tweet.ImageUrls), &image_urls)
+		if err != nil {
+			return model.TweetResponse{}, err
+		}
+	}
+
 	resTweet := model.TweetResponse{
 		ID:        tweet.ID,
 		Content:   tweet.Content,
+		ImageUrls: image_urls,
 		User:      tweet.User,
 		CreatedAt: tweet.CreatedAt,
 		UpdatedAt: tweet.UpdatedAt,
