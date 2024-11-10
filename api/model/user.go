@@ -21,16 +21,16 @@ type User struct {
 }
 
 type UserResponse struct {
-	ID              uint    `json:"id" gorm:"primaryKey"`
-	Email           string  `json:"email" gorm:"unique"`
-	Name            string  `json:"name"`
-	Image           string  `json:"image"`
-	DisplayName     string  `json:"display_name"`
-	PhoneNumber     string  `json:"phone_number"`
-	Bio             string  `json:"bio"`
-	Location        string  `json:"location"`
-	Website         string  `json:"website"`
-	Birthday        string  `json:"birthday"`
-	ProfileImageUrl string  `json:"profile_image_url"`
-	Tweets          []Tweet `json:"tweets"`
+	ID              uint            `json:"id" gorm:"primaryKey"`
+	Email           string          `json:"email" gorm:"unique"`
+	Name            string          `json:"name"`
+	Image           string          `json:"image"`
+	DisplayName     string          `json:"display_name"`
+	PhoneNumber     string          `json:"phone_number"`
+	Bio             string          `json:"bio"`
+	Location        string          `json:"location"`
+	Website         string          `json:"website"`
+	Birthday        string          `json:"birthday"`
+	ProfileImageUrl string          `json:"profile_image_url"`
+	Tweets          []TweetResponse `json:"tweets"`
 }

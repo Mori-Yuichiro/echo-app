@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"encoding/json"
 	"go-rest-api/model"
 	"go-rest-api/repository"
 	"go-rest-api/validator"
@@ -89,6 +90,26 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		return model.UserResponse{}, err
 	}
 
+	var userTweets []model.TweetResponse
+	for _, v := range user.Tweets {
+		var image_urls []string
+		if v.ImageUrls != "" {
+			err := json.Unmarshal([]byte(v.ImageUrls), &image_urls)
+			if err != nil {
+				return model.UserResponse{}, err
+			}
+		}
+		userTweet := model.TweetResponse{
+			ID:        v.ID,
+			Content:   v.Content,
+			ImageUrls: image_urls,
+			User:      v.User,
+			CreatedAt: v.CreatedAt,
+			UpdatedAt: v.UpdatedAt,
+		}
+		userTweets = append(userTweets, userTweet)
+	}
+
 	resUser := model.UserResponse{
 		ID:              user.ID,
 		Email:           user.Email,
@@ -101,7 +122,7 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		Website:         user.Website,
 		Birthday:        user.Birthday,
 		ProfileImageUrl: user.ProfileImageUrl,
-		Tweets:          user.Tweets,
+		Tweets:          userTweets,
 	}
 	return resUser, nil
 }
