@@ -2,6 +2,7 @@
 
 import Button from "@/components/Button";
 import Loading from "@/components/Loading";
+import Tweet from "@/components/tweet/Tweet";
 import { useProfileHook } from "@/hooks/profile/useProfileHook";
 
 export default function ProfilePage() {
@@ -27,7 +28,6 @@ export default function ProfilePage() {
                         <h1 className="font-bold text-lg">{profile.displayName ? profile.displayName : profile.name}</h1>
                     </div>
                     <div>
-
                         <div className="h-48 bg-slate-400 relative">
                             {profile.profileImageUrl && <img className="w-full h-full" src={profile.profileImageUrl} alt="プロフィール画像" />}
                         </div>
@@ -95,6 +95,18 @@ export default function ProfilePage() {
                             <span className={`inline-block py-1 px-4 text-blue hover:text-blue-darker font-semibold ${tab === "likes" && "border-b-4 border-blue-300"}`}>Likes</span>
                         </li>
                     </ul>
+                    {tab === "posts" ? (
+                        <>
+                            {profile.tweets.map(tweet => (
+                                <div
+                                    key={`profile-tweet-${tweet.id}`}
+                                    className="border-black border-b">
+                                    <Tweet tweet={tweet} />
+                                </div>
+                            ))}
+                        </>
+                    ) : <></>
+                    }
                 </div>
             ) : (
                 <Loading />
