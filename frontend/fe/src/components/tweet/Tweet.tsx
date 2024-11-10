@@ -18,11 +18,13 @@ export default function Tweet({ tweet }: { tweet: TweetType }) {
                     }
                 </div>
                 <div className="w-full">
-                    {tweet.user.displayName ? (
-                        <p>{tweet.user.displayName}</p>
-                    ) : (
-                        <p>{tweet.user.name}</p>
-                    )}
+                    <Link href={`/profile/${tweet.user.id}`}>
+                        {tweet.user.displayName ? (
+                            <p>{tweet.user.displayName}</p>
+                        ) : (
+                            <p>{tweet.user.name}</p>
+                        )}
+                    </Link>
                     {(pathName.match("/tweets\/([0-9]+)")) ? (
                         <p>{tweet.content}</p>
                     ) : (

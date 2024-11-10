@@ -20,5 +20,10 @@ export const middleware = async (req: NextRequest) => {
 }
 
 export const config = {
-    matcher: ["/", "/home"]
+    matcher: [
+        "/",
+        "/home",
+        "/tweet\/([0-9]+)",
+        "/profile\/([0-9]+)"
+    ]
 }
