@@ -101,6 +101,7 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		Website:         user.Website,
 		Birthday:        user.Birthday,
 		ProfileImageUrl: user.ProfileImageUrl,
+		Tweets:          user.Tweets,
 	}
 	return resUser, nil
 }

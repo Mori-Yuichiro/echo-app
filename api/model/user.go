@@ -17,18 +17,20 @@ type User struct {
 	ProfileImageUrl string    `json:"profile_image_url"`
 	CreatedAt       time.Time `json:"created_at"`
 	UpdatedAt       time.Time `json:"updated_at"`
+	Tweets          []Tweet   `json:"tweets"`
 }
 
 type UserResponse struct {
-	ID              uint   `json:"id" gorm:"primaryKey"`
-	Email           string `json:"email" gorm:"unique"`
-	Name            string `json:"name"`
-	Image           string `json:"image"`
-	DisplayName     string `json:"display_name"`
-	PhoneNumber     string `json:"phone_number"`
-	Bio             string `json:"bio"`
-	Location        string `json:"location"`
-	Website         string `json:"website"`
-	Birthday        string `json:"birthday"`
-	ProfileImageUrl string `json:"profile_image_url"`
+	ID              uint    `json:"id" gorm:"primaryKey"`
+	Email           string  `json:"email" gorm:"unique"`
+	Name            string  `json:"name"`
+	Image           string  `json:"image"`
+	DisplayName     string  `json:"display_name"`
+	PhoneNumber     string  `json:"phone_number"`
+	Bio             string  `json:"bio"`
+	Location        string  `json:"location"`
+	Website         string  `json:"website"`
+	Birthday        string  `json:"birthday"`
+	ProfileImageUrl string  `json:"profile_image_url"`
+	Tweets          []Tweet `json:"tweets"`
 }
