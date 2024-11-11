@@ -14,6 +14,7 @@ export const useProfileHook = () => {
         "medias" |
         "likes"
     >("posts");
+    const [openModal, setOpenModal] = useState<boolean>(false);
     const { id } = useParams<{ id: string }>();
     const router = useRouter();
 
@@ -37,6 +38,8 @@ export const useProfileHook = () => {
         router,
         currentUser,
         tab,
-        setTab
+        setTab,
+        openModal,
+        setOpenModal
     };
 }
