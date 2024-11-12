@@ -4,11 +4,11 @@ export type UserType = {
     password: string;
     name: string;
     image: string;
-    displayName: string;
-    phoneNumber: string;
+    display_name: string;
+    phone_number: string;
     bio: string;
     location: string;
     website: string;
     birthday: string;
-    profileImageUrl: string;
+    profile_image_url: string;
 }

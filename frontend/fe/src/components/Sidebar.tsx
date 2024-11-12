@@ -40,8 +40,8 @@ export default function Sidebar() {
                 <div className="bg-slate-400 w-8 h-8 rounded-full">
                     {currentUser?.image && <img className="w-full h-full rounded-full" src={currentUser.image!} alt="icon" />}
                 </div>
-                {currentUser?.displayName ? (
-                    <p>{currentUser?.displayName}</p>
+                {currentUser?.display_name ? (
+                    <p>{currentUser?.display_name}</p>
                 ) : (
                     <p>{currentUser?.name}</p>
                 )}

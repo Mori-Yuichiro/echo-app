@@ -14,7 +14,7 @@ export default function ProfilePage() {
         tab,
         setTab,
         openModal,
-        setOpenModal
+        onClickToggleModal
     } = useProfileHook();
 
     return (
@@ -29,11 +29,11 @@ export default function ProfilePage() {
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 512 512"><path fill="currentColor" d="M213.3 205.3v-128L0 248l213.3 170.7v-128H512v-85.4z" /></svg>
                             </div>
-                            <h1 className="font-bold text-lg">{profile.displayName ? profile.displayName : profile.name}</h1>
+                            <h1 className="font-bold text-lg">{profile.display_name ? profile.display_name : profile.name}</h1>
                         </div>
                         <div>
                             <div className="h-48 bg-slate-400 relative">
-                                {profile.profileImageUrl && <img className="w-full h-full" src={profile.profileImageUrl} alt="プロフィール画像" />}
+                                {profile.profile_image_url && <img className="w-full h-full" src={profile.profile_image_url} alt="プロフィール画像" />}
                             </div>
                             <div className="ml-3 bg-slate-400 w-28 h-28 md:w-32 md:h-32 rounded-full absolute top-40">
                                 {profile.image && <img className="w-full h-full rounded-full" src={profile.image} alt="プロフィール・アイコン" />}
@@ -42,7 +42,7 @@ export default function ProfilePage() {
                                 {(profile.id === currentUser?.id) ? (
                                     <Button
                                         className="rounded-full border border-black px-2 py-1"
-                                        onClick={() => setOpenModal(!openModal)}
+                                        onClick={onClickToggleModal}
                                     >Edit Profile</Button>
                                 ) : (
                                     <Button
@@ -52,7 +52,7 @@ export default function ProfilePage() {
                             </div>
                         </div>
                         <div className="mb-8 px-4 space-y-10">
-                            <h1 className="text-xl">{profile.displayName ? profile.displayName : profile.name}</h1>
+                            <h1 className="text-xl">{profile.display_name ? profile.display_name : profile.name}</h1>
                             <p>{profile.bio}</p>
                             <p>{profile.website}</p>
                             <div className="flex gap-x-3">
@@ -116,7 +116,7 @@ export default function ProfilePage() {
                     {openModal &&
                         <Modal
                             openModal={openModal}
-                            setOpenModal={setOpenModal}
+                            setOpenModal={onClickToggleModal}
                             profile={profile}
                         />
                     }

@@ -50,7 +50,7 @@ export default function Modal({
                                     onClick={handleSubmit(saveProfile)}
                                 >Save</Button>
                             </div>
-                            {errors && <p className="text-red-500">{errors.displayName?.message}</p>}
+                            {errors && <p className="text-red-500">{errors.display_name?.message}</p>}
                             <div className="h-48 bg-slate-400 w-full relative">
                                 <div className="h-full w-full">
                                     {profileImageUrl && <img
@@ -98,11 +98,11 @@ export default function Modal({
                             </div>
                             <div className="flex flex-col gap-y-3">
                                 <input
-                                    id="displayName"
+                                    id="display_name"
                                     className="border border-slate-400 rounded-sm p-3"
                                     type="text"
                                     placeholder="Name"
-                                    {...register("displayName")}
+                                    {...register("display_name")}
                                 />
                                 <textarea
                                     id="bio"

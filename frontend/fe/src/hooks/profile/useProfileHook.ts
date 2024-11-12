@@ -1,6 +1,7 @@
 import { ProfileType } from "@/app/types/profile"
 import axiosInstance from "@/lib/axiosInstance";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { toggleOpenModal } from "@/store/slice/slice";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 
@@ -14,11 +15,17 @@ export const useProfileHook = () => {
         "medias" |
         "likes"
     >("posts");
-    const [openModal, setOpenModal] = useState<boolean>(false);
     const { id } = useParams<{ id: string }>();
     const router = useRouter();
 
     const currentUser = useAppSelector(state => state.slice.currentUser);
+    const openModal = useAppSelector(state => state.slice.openModal);
+    const reload = useAppSelector(state => state.slice.reload);
+    const dispatch = useAppDispatch();
+
+    const onClickToggleModal = () => {
+        dispatch(toggleOpenModal(!openModal));
+    }
 
     const { instance } = axiosInstance();
 
@@ -31,7 +38,7 @@ export const useProfileHook = () => {
             setProfile(data);
         }
         fetchData();
-    }, [])
+    }, [reload])
 
     return {
         profile,
@@ -40,6 +47,6 @@ export const useProfileHook = () => {
         tab,
         setTab,
         openModal,
-        setOpenModal
+        onClickToggleModal
     };
 }

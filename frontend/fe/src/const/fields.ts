@@ -10,13 +10,13 @@ const defaultUser: UserType = {
     password: "",
     name: "",
     image: "",
-    displayName: "",
-    phoneNumber: "",
+    display_name: "",
+    phone_number: "",
     bio: "",
     location: "",
     website: "",
     birthday: "",
-    profileImageUrl: "",
+    profile_image_url: "",
 };
 
 export const fields: fieldType = {

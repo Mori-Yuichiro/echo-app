@@ -16,6 +16,7 @@ type IUserUsecase interface {
 	SignUp(user model.User) (model.UserResponse, error)
 	Login(user model.User) (string, error)
 	GetUserById(id uint) (model.UserResponse, error)
+	UpdateUser(user model.User, userId uint) (model.UserResponse, error)
 }
 
 type userUsecase struct {
@@ -124,5 +125,26 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		ProfileImageUrl: user.ProfileImageUrl,
 		Tweets:          userTweets,
 	}
+	return resUser, nil
+}
+
+func (uu *userUsecase) UpdateUser(user model.User, userId uint) (model.UserResponse, error) {
+	if err := uu.ur.UpdateUser(&user, userId); err != nil {
+		return model.UserResponse{}, err
+	}
+	resUser := model.UserResponse{
+		ID:              user.ID,
+		Email:           user.Email,
+		Name:            user.Name,
+		Image:           user.Image,
+		DisplayName:     user.DisplayName,
+		PhoneNumber:     user.PhoneNumber,
+		Bio:             user.Bio,
+		Location:        user.Location,
+		Website:         user.Website,
+		Birthday:        user.Birthday,
+		ProfileImageUrl: user.ProfileImageUrl,
+	}
+
 	return resUser, nil
 }

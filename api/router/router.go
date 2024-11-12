@@ -53,6 +53,7 @@ func NewRouter(uc controller.IUserController, ic controller.IImageController, tc
 	}))
 	u.GET("", uc.GetUserIdByToken)
 	u.GET("/:userId", uc.GetUserById)
+	u.PUT("", uc.UpdateUser)
 
 	i := e.Group("/image-upload")
 	i.Use(echojwt.WithConfig(echojwt.Config{

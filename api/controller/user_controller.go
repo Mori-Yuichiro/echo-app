@@ -19,6 +19,7 @@ type IUserController interface {
 	CsrfToken(c echo.Context) error
 	GetUserById(c echo.Context) error
 	GetUserIdByToken(c echo.Context) error
+	UpdateUser(c echo.Context) error
 }
 
 type userController struct {
@@ -40,6 +41,7 @@ func (uc *userController) SignUp(c echo.Context) error {
 	}
 	return c.JSON(http.StatusCreated, userRes)
 }
+
 func (uc *userController) LogIn(c echo.Context) error {
 	user := model.User{}
 	if err := c.Bind(&user); err != nil {
@@ -122,4 +124,26 @@ func (uc *userController) GetUserIdByToken(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, userId)
+}
+
+func (uc *userController) UpdateUser(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	userId := claims["user_id"]
+
+	if userId == nil {
+		return c.JSON(http.StatusInternalServerError, "you don't have userId")
+	}
+
+	updateUser := model.User{}
+	if err := c.Bind(&updateUser); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	userRes, err := uc.uu.UpdateUser(updateUser, uint(userId.(float64)))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, userRes)
 }

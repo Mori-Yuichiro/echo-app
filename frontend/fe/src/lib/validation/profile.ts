@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const profilePatchSchema = z.object({
-    displayName: z.string()
+    display_name: z.string()
         .min(1, { message: "名前を1文字以上入力してください" })
         .optional(),
     bio: z.string().optional(),
