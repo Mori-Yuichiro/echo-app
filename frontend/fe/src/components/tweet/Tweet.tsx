@@ -19,8 +19,8 @@ export default function Tweet({ tweet }: { tweet: TweetType }) {
                 </div>
                 <div className="w-full">
                     <Link href={`/profile/${tweet.user.id}`}>
-                        {tweet.user.displayName ? (
-                            <p>{tweet.user.displayName}</p>
+                        {tweet.user.display_name ? (
+                            <p>{tweet.user.display_name}</p>
                         ) : (
                             <p>{tweet.user.name}</p>
                         )}

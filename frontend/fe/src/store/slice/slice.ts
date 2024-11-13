@@ -4,11 +4,13 @@ import { UserType } from "@/app/types/user";
 interface State {
     currentUser: UserType | undefined;
     reload: boolean;
+    openModal: boolean;
 }
 
 const initialState: State = {
     currentUser: undefined,
-    reload: false
+    reload: false,
+    openModal: false
 };
 
 const slice = createSlice({
@@ -20,9 +22,12 @@ const slice = createSlice({
         },
         toggleReload(state, action: PayloadAction<boolean>) {
             state.reload = action.payload;
+        },
+        toggleOpenModal(state, action: PayloadAction<boolean>) {
+            state.openModal = action.payload;
         }
     }
 });
 
-export const { toggleReload, changeCurrentUser } = slice.actions;
+export const { toggleReload, changeCurrentUser, toggleOpenModal } = slice.actions;
 export default slice.reducer;
