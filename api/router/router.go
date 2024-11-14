@@ -82,7 +82,8 @@ func NewRouter(
 		SigningKey:  []byte(os.Getenv("SECRET")),
 		TokenLookup: "cookie:token",
 	}))
-	f.POST("", fc.CreateFavorite)
+	f.POST("/:tweetId", fc.CreateFavorite)
+	f.DELETE("/:tweetId", fc.DeleteFavorite)
 
 	return e
 }

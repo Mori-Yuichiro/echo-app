@@ -7,6 +7,7 @@ import (
 
 type IFavoriteUsecase interface {
 	CreateFavorite(favorite model.Favorite) (model.FavoriteResponse, error)
+	DeleteFavorite(userId uint, tweetId uint) error
 }
 
 type favoriteUsecase struct {
@@ -30,4 +31,11 @@ func (fu *favoriteUsecase) CreateFavorite(favorite model.Favorite) (model.Favori
 		UpdatedAt: favorite.UpdatedAt,
 	}
 	return resFavorite, nil
+}
+
+func (fu *favoriteUsecase) DeleteFavorite(userId uint, tweetId uint) error {
+	if err := fu.fr.DeleteFavorite(userId, tweetId); err != nil {
+		return err
+	}
+	return nil
 }
