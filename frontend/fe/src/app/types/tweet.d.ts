@@ -1,3 +1,4 @@
+import { FavoriteType } from "./favorite";
 import { UserType } from "./user";
 
 export type TweetType = {
@@ -7,4 +8,5 @@ export type TweetType = {
     user: UserType;
     createdAt: Datetime;
     updatedAt: Datetime;
+    favorites: FavoriteType[];
 }

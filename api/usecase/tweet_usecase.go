@@ -31,6 +31,17 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 
 	resTweets := []model.TweetResponse{}
 	for _, v := range tweets {
+		var favorites []model.FavoriteResponse
+		for _, fav := range v.Favorites {
+			favorites = append(favorites, model.FavoriteResponse{
+				ID:        fav.ID,
+				UserId:    fav.UserId,
+				TweetId:   fav.TweetId,
+				CreatedAt: fav.CreatedAt,
+				UpdatedAt: fav.UpdatedAt,
+			})
+		}
+
 		if v.ImageUrls != "" {
 			var image_urls []string
 			err := json.Unmarshal([]byte(v.ImageUrls), &image_urls)
@@ -45,6 +56,7 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 				User:      v.User,
 				CreatedAt: v.CreatedAt,
 				UpdatedAt: v.UpdatedAt,
+				Favorites: favorites,
 			}
 			resTweets = append(resTweets, t)
 		} else {
@@ -54,6 +66,7 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 				User:      v.User,
 				CreatedAt: v.CreatedAt,
 				UpdatedAt: v.UpdatedAt,
+				Favorites: favorites,
 			}
 			resTweets = append(resTweets, t)
 		}
