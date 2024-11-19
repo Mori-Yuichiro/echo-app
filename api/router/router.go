@@ -10,7 +10,12 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func NewRouter(uc controller.IUserController, ic controller.IImageController, tc controller.ITweetController) *echo.Echo {
+func NewRouter(
+	uc controller.IUserController,
+	ic controller.IImageController,
+	tc controller.ITweetController,
+	fc controller.IFavoriteController,
+) *echo.Echo {
 	e := echo.New()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -71,6 +76,14 @@ func NewRouter(uc controller.IUserController, ic controller.IImageController, tc
 	t.GET("/:tweetId", tc.GetTweetById)
 	t.POST("", tc.CreateTweet)
 	t.DELETE("/:tweetId", tc.DeleteTweet)
+
+	f := e.Group("/favorite")
+	f.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	f.POST("/:tweetId", fc.CreateFavorite)
+	f.DELETE("/:tweetId", fc.DeleteFavorite)
 
 	return e
 }

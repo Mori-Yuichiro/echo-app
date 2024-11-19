@@ -36,6 +36,15 @@ func main() {
 	tweetUsecase := usecase.NewTweetUsecase(tweetRepository, tweetValidator)
 	tweetController := controller.NewTweetController(tweetUsecase)
 
-	e := router.NewRouter(userController, imageController, tweetController)
+	favoriteRepository := repository.NewFavoriteRepository(db)
+	favoriteUsecase := usecase.NewFavoriteUsecase(favoriteRepository)
+	favoriteController := controller.NewFavoriteController(favoriteUsecase)
+
+	e := router.NewRouter(
+		userController,
+		imageController,
+		tweetController,
+		favoriteController,
+	)
 	e.Logger.Fatal(e.Start(":8080"))
 }
