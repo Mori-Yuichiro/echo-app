@@ -88,11 +88,23 @@ func (tu *tweetUsecase) GetTweetById(tweetId uint) (model.TweetResponse, error) 
 		}
 	}
 
+	var favorites []model.FavoriteResponse
+	for _, fav := range tweet.Favorites {
+		favorites = append(favorites, model.FavoriteResponse{
+			ID:        fav.ID,
+			UserId:    fav.UserId,
+			TweetId:   fav.TweetId,
+			CreatedAt: fav.CreatedAt,
+			UpdatedAt: fav.UpdatedAt,
+		})
+	}
+
 	resTweet := model.TweetResponse{
 		ID:        tweet.ID,
 		Content:   tweet.Content,
 		ImageUrls: image_urls,
 		User:      tweet.User,
+		Favorites: favorites,
 		CreatedAt: tweet.CreatedAt,
 		UpdatedAt: tweet.UpdatedAt,
 	}
