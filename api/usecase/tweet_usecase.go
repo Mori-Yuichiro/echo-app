@@ -108,6 +108,7 @@ func (tu *tweetUsecase) GetTweetById(tweetId uint) (model.TweetResponse, error) 
 			TweetId:   com.TweetId,
 			CreatedAt: com.CreatedAt,
 			UpdatedAt: com.UpdatedAt,
+			User:      com.User,
 		})
 	}
 

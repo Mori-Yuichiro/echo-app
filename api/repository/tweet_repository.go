@@ -30,7 +30,7 @@ func (tr *tweetRepository) GetAllTweets(tweet *[]model.Tweet) error {
 }
 
 func (tr *tweetRepository) GetTweetById(tweet *model.Tweet, tweetId uint) error {
-	if err := tr.db.Preload("User").Preload("Favorites").Preload("Comments").Order("created_at").First(tweet, tweetId).Error; err != nil {
+	if err := tr.db.Preload("User").Preload("Favorites").Preload("Comments").Preload("Comments.User").Order("created_at").First(tweet, tweetId).Error; err != nil {
 		return err
 	}
 	return nil
