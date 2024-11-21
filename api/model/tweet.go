@@ -11,6 +11,7 @@ type Tweet struct {
 	User      User       `json:"user" gorm:"foreignKey:UserId; constraint:OnDelete:CASCADE"`
 	UserId    uint       `json:"user_id" gorm:"not null"`
 	Favorites []Favorite `json:"favorites"`
+	Comments  []Comment  `json:"comments"`
 }
 
 type TweetResponse struct {
@@ -21,4 +22,5 @@ type TweetResponse struct {
 	CreatedAt time.Time          `json:"created_at"`
 	UpdatedAt time.Time          `json:"updated_at"`
 	Favorites []FavoriteResponse `json:"favorites"`
+	Comments  []CommentResponse  `json:"comments"`
 }

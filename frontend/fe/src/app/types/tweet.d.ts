@@ -1,3 +1,4 @@
+import { CommentType } from "./comment";
 import { FavoriteType } from "./favorite";
 import { UserType } from "./user";
 
@@ -9,4 +10,5 @@ export type TweetType = {
     createdAt: Datetime;
     updatedAt: Datetime;
     favorites: FavoriteType[];
+    comments: CommentType[];
 }

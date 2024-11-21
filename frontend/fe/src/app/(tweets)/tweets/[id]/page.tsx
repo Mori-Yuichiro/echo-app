@@ -1,5 +1,7 @@
 "use client"
 
+import Button from "@/components/Button";
+import Comment from "@/components/comment/Comment";
 import Loading from "@/components/Loading";
 import Tweet from "@/components/tweet/Tweet";
 import { useTweetDetailHook } from "@/hooks/tweet-detail/useTweetDetailHook";
@@ -7,7 +9,11 @@ import { useTweetDetailHook } from "@/hooks/tweet-detail/useTweetDetailHook";
 export default function TweetDetailPage() {
     const {
         tweet,
-        router
+        router,
+        register,
+        handleSubmit,
+        errors,
+        onClickSendComment
     } = useTweetDetailHook();
 
     return (
@@ -24,6 +30,40 @@ export default function TweetDetailPage() {
             {tweet ? (
                 <div>
                     <Tweet tweet={tweet} />
+                    <div className="border-b border-gray-200">
+                        {errors.comment && <p className="text-red-500 p-2">{errors.comment.message}</p>}
+                        <div className="px-4 py-3 flex gap-x-2 justify-between">
+                            <div className="bg-slate-400 rounded-full w-8 h-8">
+                                {tweet.user.image &&
+                                    <img
+                                        src={tweet.user.image}
+                                        alt="アイコン"
+                                        className="w-full h-full rounded-full"
+                                    />
+                                }
+                            </div>
+                            <input
+                                id="comment"
+                                type="text"
+                                placeholder="Post your reply"
+                                className="w-3/4 px-2"
+                                {...register("comment")}
+                            />
+                            <Button
+                                className="rounded-full bg-cyan-400 py-2 w-1/12 text-sm"
+                                onClick={handleSubmit(onClickSendComment)}
+                            >Reply</Button>
+                        </div>
+                    </div>
+                    {tweet.comments && (
+                        <>
+                            {tweet.comments.map(comment => (
+                                <div key={comment.id}>
+                                    <Comment comment={comment} />
+                                </div>
+                            ))}
+                        </>
+                    )}
                 </div>
             ) : (
                 <Loading />

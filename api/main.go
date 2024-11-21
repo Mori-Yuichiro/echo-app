@@ -23,6 +23,7 @@ func main() {
 
 	userValidator := validator.NewUserValidator()
 	tweetValidator := validator.NewTweetValidator()
+	commentValidator := validator.NewCommentValidator()
 
 	userRepository := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
@@ -40,11 +41,19 @@ func main() {
 	favoriteUsecase := usecase.NewFavoriteUsecase(favoriteRepository)
 	favoriteController := controller.NewFavoriteController(favoriteUsecase)
 
+	commentRepository := repository.NewCommentRepository(db)
+	commentUsecase := usecase.NewCommentUsecase(
+		commentRepository,
+		commentValidator,
+	)
+	commentController := controller.NewCommentController(commentUsecase)
+
 	e := router.NewRouter(
 		userController,
 		imageController,
 		tweetController,
 		favoriteController,
+		commentController,
 	)
 	e.Logger.Fatal(e.Start(":8080"))
 }

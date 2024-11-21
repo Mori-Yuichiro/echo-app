@@ -15,6 +15,7 @@ func NewRouter(
 	ic controller.IImageController,
 	tc controller.ITweetController,
 	fc controller.IFavoriteController,
+	cc controller.ICommentController,
 ) *echo.Echo {
 	e := echo.New()
 
@@ -84,6 +85,13 @@ func NewRouter(
 	}))
 	f.POST("/:tweetId", fc.CreateFavorite)
 	f.DELETE("/:tweetId", fc.DeleteFavorite)
+
+	c := e.Group("/comment")
+	c.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	c.POST("", cc.CreateComment)
 
 	return e
 }
