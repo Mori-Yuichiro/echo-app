@@ -1,5 +1,6 @@
 import { TweetType } from "@/app/types/tweet";
 import axiosInstance from "@/lib/axiosInstance"
+import { useAppSelector } from "@/store/hooks";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -7,6 +8,7 @@ export const useTweetDetailHook = () => {
     const { instance } = axiosInstance();
     const [tweet, setTweet] = useState<TweetType | null>(null);
     const router = useRouter();
+    const reload = useAppSelector(state => state.slice.reload);
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
@@ -18,7 +20,7 @@ export const useTweetDetailHook = () => {
             setTweet(data);
         }
         fetchData();
-    }, [])
+    }, [reload])
 
     return {
         tweet,
