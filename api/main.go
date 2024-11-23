@@ -48,12 +48,17 @@ func main() {
 	)
 	commentController := controller.NewCommentController(commentUsecase)
 
+	retweetRepository := repository.NewRetweetRepository(db)
+	retweetUsecase := usecase.NewRetweetUsecase(retweetRepository)
+	retweetController := controller.NewRetweetController(retweetUsecase)
+
 	e := router.NewRouter(
 		userController,
 		imageController,
 		tweetController,
 		favoriteController,
 		commentController,
+		retweetController,
 	)
 	e.Logger.Fatal(e.Start(":8080"))
 }
