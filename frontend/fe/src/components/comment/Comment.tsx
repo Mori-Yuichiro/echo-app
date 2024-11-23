@@ -14,6 +14,11 @@ export default function Comment({ comment }: { comment: CommentType }) {
                     }
                 </div>
                 <div className="w-full">
+                    {comment.user.display_name ? (
+                        <p>{comment.user.display_name}</p>
+                    ) : (
+                        <p>{comment.user.name}</p>
+                    )}
                     <p>{comment.comment}</p>
                 </div>
             </div>

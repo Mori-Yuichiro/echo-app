@@ -19,6 +19,7 @@ type User struct {
 	UpdatedAt       time.Time  `json:"updated_at"`
 	Tweets          []Tweet    `json:"tweets"`
 	Favorites       []Favorite `json:"favorites"`
+	Comments        []Comment  `json:"comments"`
 }
 
 type UserResponse struct {
@@ -35,4 +36,5 @@ type UserResponse struct {
 	ProfileImageUrl string             `json:"profile_image_url"`
 	Tweets          []TweetResponse    `json:"tweets"`
 	Favorites       []FavoriteResponse `json:"favorites"`
+	Comments        []CommentResponse  `json:"comments"`
 }

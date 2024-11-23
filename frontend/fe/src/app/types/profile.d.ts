@@ -1,3 +1,4 @@
+import { CommentType } from "./comment";
 import { FavoriteType } from "./favorite";
 import { TweetType } from "./tweet";
 import { UserType } from "./user";
@@ -5,4 +6,5 @@ import { UserType } from "./user";
 export type ProfileType =
     UserType &
     { tweets: TweetType[] } &
-    { favorites: FavoriteType[] }
+    { favorites: FavoriteType[] } &
+    { comments: CommentType[] }
