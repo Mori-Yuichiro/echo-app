@@ -101,11 +101,25 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 				return model.UserResponse{}, err
 			}
 		}
+
+		// Userが投稿したTweetのFavoritesを取得
+		var tweetFavorite []model.FavoriteResponse
+		for _, fav := range v.Favorites {
+			tweetFavorite = append(tweetFavorite, model.FavoriteResponse{
+				ID:        fav.ID,
+				UserId:    fav.UserId,
+				TweetId:   fav.TweetId,
+				CreatedAt: fav.CreatedAt,
+				UpdatedAt: fav.UpdatedAt,
+			})
+		}
+
 		userTweet := model.TweetResponse{
 			ID:        v.ID,
 			Content:   v.Content,
 			ImageUrls: image_urls,
 			User:      v.User,
+			Favorites: tweetFavorite,
 			CreatedAt: v.CreatedAt,
 			UpdatedAt: v.UpdatedAt,
 		}
