@@ -20,7 +20,7 @@ export const useTweetHook = (id: number) => {
             }
 
             const { status } = await instance.post(
-                `/favorite/${id}`,
+                `/tweets/${id}/favorite`,
                 {},
                 { withCredentials: true }
             );
@@ -39,7 +39,7 @@ export const useTweetHook = (id: number) => {
             }
 
             const { status } = await instance.delete(
-                `/favorite/${id}`,
+                `/tweets/${id}/favorite`,
                 { withCredentials: true }
             );
 
