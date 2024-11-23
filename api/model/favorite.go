@@ -13,9 +13,10 @@ type Favorite struct {
 }
 
 type FavoriteResponse struct {
-	ID        uint      `json:"id" gorm:"primaryKey"`
-	UserId    uint      `json:"user_id" gorm:"not null; uniqueIndex:idx_user_tweet"`
-	TweetId   uint      `json:"tweet_id" gorm:"not null; uniqueIndex:idx_user_tweet"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        uint          `json:"id" gorm:"primaryKey"`
+	UserId    uint          `json:"user_id" gorm:"not null; uniqueIndex:idx_user_tweet"`
+	TweetId   uint          `json:"tweet_id" gorm:"not null; uniqueIndex:idx_user_tweet"`
+	CreatedAt time.Time     `json:"created_at"`
+	UpdatedAt time.Time     `json:"updated_at"`
+	Tweet     TweetResponse `json:"tweet"`
 }

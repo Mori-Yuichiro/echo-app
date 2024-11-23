@@ -91,6 +91,7 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		return model.UserResponse{}, err
 	}
 
+	// Userがツイートした内容
 	var userTweets []model.TweetResponse
 	for _, v := range user.Tweets {
 		var image_urls []string
@@ -111,6 +112,50 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		userTweets = append(userTweets, userTweet)
 	}
 
+	// Userがいいねしたツイート
+	var favoriteResponse []model.FavoriteResponse
+	for _, fav := range user.Favorites {
+		var image_urls []string
+		if fav.Tweet.ImageUrls != "" {
+			err := json.Unmarshal([]byte(fav.Tweet.ImageUrls), &image_urls)
+			if err != nil {
+				return model.UserResponse{}, err
+			}
+		}
+
+		var favTweetFavorites []model.FavoriteResponse
+		for _, tweetFav := range fav.Tweet.Favorites {
+			favTweetFavorites = append(favTweetFavorites, model.FavoriteResponse{
+				ID:        tweetFav.ID,
+				UserId:    tweetFav.UserId,
+				TweetId:   tweetFav.TweetId,
+				CreatedAt: tweetFav.CreatedAt,
+				UpdatedAt: tweetFav.UpdatedAt,
+			})
+		}
+
+		favTweet := model.TweetResponse{
+			ID:        fav.Tweet.ID,
+			Content:   fav.Tweet.Content,
+			ImageUrls: image_urls,
+			User:      fav.Tweet.User,
+			Favorites: favTweetFavorites,
+			CreatedAt: fav.Tweet.CreatedAt,
+			UpdatedAt: fav.Tweet.UpdatedAt,
+		}
+
+		favorite := model.FavoriteResponse{
+			ID:        fav.ID,
+			UserId:    fav.UserId,
+			TweetId:   fav.TweetId,
+			CreatedAt: fav.CreatedAt,
+			UpdatedAt: fav.UpdatedAt,
+			Tweet:     favTweet,
+		}
+
+		favoriteResponse = append(favoriteResponse, favorite)
+	}
+
 	resUser := model.UserResponse{
 		ID:              user.ID,
 		Email:           user.Email,
@@ -124,6 +169,7 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		Birthday:        user.Birthday,
 		ProfileImageUrl: user.ProfileImageUrl,
 		Tweets:          userTweets,
+		Favorites:       favoriteResponse,
 	}
 	return resUser, nil
 }

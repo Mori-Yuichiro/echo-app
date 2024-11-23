@@ -33,7 +33,9 @@ func (ur *userRepository) GetUserByEmail(user *model.User, email string) error {
 func (ur *userRepository) GetUserById(user *model.User, id uint) error {
 	if err := ur.db.Preload("Tweets", func(db *gorm.DB) *gorm.DB {
 		return db.Order("created_at desc")
-	}).Preload("Tweets.User").Where("id=?", id).Find(user).Error; err != nil {
+	}).Preload("Tweets.User").Preload("Favorites", func(db *gorm.DB) *gorm.DB {
+		return db.Order("created_at desc")
+	}).Preload("Favorites.Tweet").Preload("Favorites.Tweet.User").Preload("Favorites.Tweet.Favorites").Where("id=?", id).Find(user).Error; err != nil {
 		return err
 	}
 	return nil

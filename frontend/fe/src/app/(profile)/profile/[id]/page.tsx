@@ -110,6 +110,14 @@ export default function ProfilePage() {
                                     </div>
                                 ))}
                             </>
+                        ) : (tab === "likes") ? (
+                            <>
+                                {profile.favorites.map(favorite => (
+                                    <div key={`profile-favorite-${favorite.id}`}>
+                                        <Tweet tweet={favorite.tweet} />
+                                    </div>
+                                ))}
+                            </>
                         ) : <></>
                         }
                     </div>
