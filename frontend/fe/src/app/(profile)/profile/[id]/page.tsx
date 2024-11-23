@@ -1,6 +1,7 @@
 "use client"
 
 import Button from "@/components/Button";
+import Comment from "@/components/comment/Comment";
 import Loading from "@/components/Loading";
 import Modal from "@/components/modal/Modal";
 import Tweet from "@/components/tweet/Tweet";
@@ -107,6 +108,14 @@ export default function ProfilePage() {
                                         key={`profile-tweet-${tweet.id}`}
                                         className="border-black border-b">
                                         <Tweet tweet={tweet} />
+                                    </div>
+                                ))}
+                            </>
+                        ) : (tab === "comments") ? (
+                            <>
+                                {profile.comments.map(comment => (
+                                    <div key={`profile-comment-${comment.id}`}>
+                                        <Comment comment={comment} />
                                     </div>
                                 ))}
                             </>

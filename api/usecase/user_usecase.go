@@ -170,6 +170,20 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		favoriteResponse = append(favoriteResponse, favorite)
 	}
 
+	// Userが投稿したCommentsを取得
+	var comments []model.CommentResponse
+	for _, com := range user.Comments {
+		comments = append(comments, model.CommentResponse{
+			ID:        com.ID,
+			Comment:   com.Comment,
+			UserId:    com.UserId,
+			TweetId:   com.TweetId,
+			CreatedAt: com.CreatedAt,
+			UpdatedAt: com.UpdatedAt,
+			User:      com.User,
+		})
+	}
+
 	resUser := model.UserResponse{
 		ID:              user.ID,
 		Email:           user.Email,
@@ -184,6 +198,7 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		ProfileImageUrl: user.ProfileImageUrl,
 		Tweets:          userTweets,
 		Favorites:       favoriteResponse,
+		Comments:        comments,
 	}
 	return resUser, nil
 }
