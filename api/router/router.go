@@ -82,6 +82,9 @@ func NewRouter(
 	t.POST("/:tweetId/favorite", fc.CreateFavorite)
 	t.DELETE("/:tweetId/favorite", fc.DeleteFavorite)
 
+	t.POST("/:tweetId/retweet", rc.CreateRetweet)
+	t.DELETE("/:tweetId/retweet", rc.DeleteRetweet)
+
 	c := e.Group("/comment")
 	c.Use(echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(os.Getenv("SECRET")),
