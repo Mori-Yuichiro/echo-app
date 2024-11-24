@@ -33,11 +33,13 @@ func (ur *userRepository) GetUserByEmail(user *model.User, email string) error {
 func (ur *userRepository) GetUserById(user *model.User, id uint) error {
 	if err := ur.db.Preload("Tweets", func(db *gorm.DB) *gorm.DB {
 		return db.Order("created_at desc")
-	}).Preload("Tweets.User").Preload("Tweets.Favorites").Preload("Favorites", func(db *gorm.DB) *gorm.DB {
+	}).Preload("Tweets.User").Preload("Tweets.Favorites").Preload("Tweets.Retweets").Preload("Favorites", func(db *gorm.DB) *gorm.DB {
 		return db.Order("created_at desc")
-	}).Preload("Favorites.Tweet").Preload("Favorites.Tweet.User").Preload("Favorites.Tweet.Favorites").Preload("Comments", func(db *gorm.DB) *gorm.DB {
+	}).Preload("Favorites.Tweet").Preload("Favorites.Tweet.User").Preload("Favorites.Tweet.Favorites").Preload("Favorites.Tweet.Retweets").Preload("Comments", func(db *gorm.DB) *gorm.DB {
 		return db.Order("created_at desc")
-	}).Preload("Comments.User").Where("id=?", id).Find(user).Error; err != nil {
+	}).Preload("Comments.User").Preload("Retweets", func(db *gorm.DB) *gorm.DB {
+		return db.Order("created_at desc")
+	}).Preload("Retweets.Tweet").Preload("Retweets.Tweet.User").Preload("Retweets.Tweet.Favorites").Preload("Retweets.Tweet.Retweets").Where("id=?", id).Find(user).Error; err != nil {
 		return err
 	}
 	return nil

@@ -184,6 +184,63 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		})
 	}
 
+	// Userがリツイートした内容
+	var retweets []model.RetweetResponse
+	for _, ret := range user.Retweets {
+		var image_urls []string
+		if ret.Tweet.ImageUrls != "" {
+			err := json.Unmarshal([]byte(ret.Tweet.ImageUrls), &image_urls)
+			if err != nil {
+				return model.UserResponse{}, err
+			}
+		}
+
+		// userがretweetしたtweetが保持するfavorite数
+		var retweetTweetFavorites []model.FavoriteResponse
+		for _, retTweetFavorite := range ret.Tweet.Favorites {
+			retweetTweetFavorites = append(retweetTweetFavorites, model.FavoriteResponse{
+				ID:        retTweetFavorite.ID,
+				UserId:    retTweetFavorite.UserId,
+				TweetId:   retTweetFavorite.TweetId,
+				CreatedAt: retTweetFavorite.CreatedAt,
+				UpdatedAt: retTweetFavorite.UpdatedAt,
+			})
+		}
+
+		// userがretweetしたtweetが保持するretweet数
+		var retweetTweetRetweets []model.RetweetResponse
+		for _, retTweetRetweet := range ret.Tweet.Retweets {
+			retweetTweetRetweets = append(retweetTweetRetweets, model.RetweetResponse{
+				ID:        retTweetRetweet.ID,
+				UserId:    retTweetRetweet.UserId,
+				TweetId:   retTweetRetweet.TweetId,
+				CreatedAt: retTweetRetweet.CreatedAt,
+				UpdatedAt: retTweetRetweet.UpdatedAt,
+			})
+		}
+
+		retTweet := model.TweetResponse{
+			ID:        ret.Tweet.ID,
+			Content:   ret.Tweet.Content,
+			ImageUrls: image_urls,
+			User:      ret.Tweet.User,
+			CreatedAt: ret.Tweet.CreatedAt,
+			UpdatedAt: ret.Tweet.UpdatedAt,
+			Favorites: retweetTweetFavorites,
+			Retweets:  retweetTweetRetweets,
+		}
+
+		retweet := model.RetweetResponse{
+			ID:        ret.ID,
+			UserId:    ret.UserId,
+			TweetId:   ret.TweetId,
+			CreatedAt: ret.CreatedAt,
+			UpdatedAt: ret.UpdatedAt,
+			Tweet:     retTweet,
+		}
+		retweets = append(retweets, retweet)
+	}
+
 	resUser := model.UserResponse{
 		ID:              user.ID,
 		Email:           user.Email,
@@ -199,6 +256,7 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		Tweets:          userTweets,
 		Favorites:       favoriteResponse,
 		Comments:        comments,
+		Retweets:        retweets,
 	}
 	return resUser, nil
 }
