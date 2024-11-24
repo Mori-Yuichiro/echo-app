@@ -114,12 +114,25 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 			})
 		}
 
+		// userが投稿したtweetのretweet数を取得
+		var tweetRetweets []model.RetweetResponse
+		for _, ret := range v.Retweets {
+			tweetRetweets = append(tweetRetweets, model.RetweetResponse{
+				ID:        ret.ID,
+				UserId:    ret.UserId,
+				TweetId:   ret.TweetId,
+				CreatedAt: ret.CreatedAt,
+				UpdatedAt: ret.UpdatedAt,
+			})
+		}
+
 		userTweet := model.TweetResponse{
 			ID:        v.ID,
 			Content:   v.Content,
 			ImageUrls: image_urls,
 			User:      v.User,
 			Favorites: tweetFavorite,
+			Retweets:  tweetRetweets,
 			CreatedAt: v.CreatedAt,
 			UpdatedAt: v.UpdatedAt,
 		}
@@ -127,7 +140,7 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 	}
 
 	// Userがいいねしたツイート
-	var favoriteResponse []model.FavoriteResponse
+	var favorites []model.FavoriteResponse
 	for _, fav := range user.Favorites {
 		var image_urls []string
 		if fav.Tweet.ImageUrls != "" {
@@ -137,14 +150,27 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 			}
 		}
 
+		// userがfavoriteしたtweetが保持するfavorite数
 		var favTweetFavorites []model.FavoriteResponse
-		for _, tweetFav := range fav.Tweet.Favorites {
+		for _, favTweetFavorite := range fav.Tweet.Favorites {
 			favTweetFavorites = append(favTweetFavorites, model.FavoriteResponse{
-				ID:        tweetFav.ID,
-				UserId:    tweetFav.UserId,
-				TweetId:   tweetFav.TweetId,
-				CreatedAt: tweetFav.CreatedAt,
-				UpdatedAt: tweetFav.UpdatedAt,
+				ID:        favTweetFavorite.ID,
+				UserId:    favTweetFavorite.UserId,
+				TweetId:   favTweetFavorite.TweetId,
+				CreatedAt: favTweetFavorite.CreatedAt,
+				UpdatedAt: favTweetFavorite.UpdatedAt,
+			})
+		}
+
+		// userがfavoriteしたtweetが保持するretweet数
+		var favTweetRetweets []model.RetweetResponse
+		for _, favTweetRetweet := range fav.Tweet.Retweets {
+			favTweetRetweets = append(favTweetRetweets, model.RetweetResponse{
+				ID:        favTweetRetweet.ID,
+				UserId:    favTweetRetweet.UserId,
+				TweetId:   favTweetRetweet.TweetId,
+				CreatedAt: favTweetRetweet.CreatedAt,
+				UpdatedAt: favTweetRetweet.UpdatedAt,
 			})
 		}
 
@@ -153,9 +179,10 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 			Content:   fav.Tweet.Content,
 			ImageUrls: image_urls,
 			User:      fav.Tweet.User,
-			Favorites: favTweetFavorites,
 			CreatedAt: fav.Tweet.CreatedAt,
 			UpdatedAt: fav.Tweet.UpdatedAt,
+			Favorites: favTweetFavorites,
+			Retweets:  favTweetRetweets,
 		}
 
 		favorite := model.FavoriteResponse{
@@ -166,8 +193,7 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 			UpdatedAt: fav.UpdatedAt,
 			Tweet:     favTweet,
 		}
-
-		favoriteResponse = append(favoriteResponse, favorite)
+		favorites = append(favorites, favorite)
 	}
 
 	// Userが投稿したCommentsを取得
@@ -254,7 +280,7 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		Birthday:        user.Birthday,
 		ProfileImageUrl: user.ProfileImageUrl,
 		Tweets:          userTweets,
-		Favorites:       favoriteResponse,
+		Favorites:       favorites,
 		Comments:        comments,
 		Retweets:        retweets,
 	}
