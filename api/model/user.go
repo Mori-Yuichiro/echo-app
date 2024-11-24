@@ -20,6 +20,7 @@ type User struct {
 	Tweets          []Tweet    `json:"tweets"`
 	Favorites       []Favorite `json:"favorites"`
 	Comments        []Comment  `json:"comments"`
+	Retweets        []Retweet  `json:"retweets"`
 }
 
 type UserResponse struct {
@@ -37,4 +38,5 @@ type UserResponse struct {
 	Tweets          []TweetResponse    `json:"tweets"`
 	Favorites       []FavoriteResponse `json:"favorites"`
 	Comments        []CommentResponse  `json:"comments"`
+	Retweets        []RetweetResponse  `json:"retweets"`
 }
