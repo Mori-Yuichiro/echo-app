@@ -49,10 +49,49 @@ export const useTweetHook = (id: number) => {
         }
     }
 
+    const onClickCreateRetweet = async () => {
+        try {
+            if (instance.defaults.headers.common["X-CSRF-Token"] === undefined) {
+                const csrf = await getCsrfToken();
+                instance.defaults.headers.common["X-CSRF-Token"] = csrf;
+            }
+
+            const { status } = await instance.post(
+                `/tweets/${id}/retweet`,
+                {},
+                { withCredentials: true }
+            );
+
+            if (status === 200) dispatch(toggleReload(!reload));
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const onClickDeleteRetweet = async () => {
+        try {
+            if (instance.defaults.headers.common["X-CSRF-Token"] === undefined) {
+                const csrf = await getCsrfToken();
+                instance.defaults.headers.common["X-CSRF-Token"] = csrf;
+            }
+
+            const { status } = await instance.delete(
+                `/tweets/${id}/retweet`,
+                { withCredentials: true }
+            );
+
+            if (status === 200) dispatch(toggleReload(!reload));
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     return {
         pathName,
         currentUser,
         onClickCreateFavorite,
-        onClickDeleteFavorite
+        onClickDeleteFavorite,
+        onClickCreateRetweet,
+        onClickDeleteRetweet
     };
 }

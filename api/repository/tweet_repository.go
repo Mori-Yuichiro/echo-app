@@ -23,7 +23,7 @@ func NewTweetRepository(db *gorm.DB) ITweetRepository {
 }
 
 func (tr *tweetRepository) GetAllTweets(tweet *[]model.Tweet) error {
-	if err := tr.db.Preload("User").Preload("Favorites").Order("created_at DESC").Find(tweet).Error; err != nil {
+	if err := tr.db.Preload("User").Preload("Favorites").Preload("Retweets").Order("created_at DESC").Find(tweet).Error; err != nil {
 		return err
 	}
 	return nil
