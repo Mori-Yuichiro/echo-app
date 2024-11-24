@@ -15,5 +15,6 @@ func main() {
 		&model.Tweet{},
 		&model.Favorite{},
 		&model.Comment{},
+		&model.Retweet{},
 	)
 }

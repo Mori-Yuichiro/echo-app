@@ -16,6 +16,7 @@ func NewRouter(
 	tc controller.ITweetController,
 	fc controller.IFavoriteController,
 	cc controller.ICommentController,
+	rc controller.IRetweetController,
 ) *echo.Echo {
 	e := echo.New()
 
@@ -78,13 +79,11 @@ func NewRouter(
 	t.POST("", tc.CreateTweet)
 	t.DELETE("/:tweetId", tc.DeleteTweet)
 
-	f := e.Group("/favorite")
-	f.Use(echojwt.WithConfig(echojwt.Config{
-		SigningKey:  []byte(os.Getenv("SECRET")),
-		TokenLookup: "cookie:token",
-	}))
-	f.POST("/:tweetId", fc.CreateFavorite)
-	f.DELETE("/:tweetId", fc.DeleteFavorite)
+	t.POST("/:tweetId/favorite", fc.CreateFavorite)
+	t.DELETE("/:tweetId/favorite", fc.DeleteFavorite)
+
+	t.POST("/:tweetId/retweet", rc.CreateRetweet)
+	t.DELETE("/:tweetId/retweet", rc.DeleteRetweet)
 
 	c := e.Group("/comment")
 	c.Use(echojwt.WithConfig(echojwt.Config{

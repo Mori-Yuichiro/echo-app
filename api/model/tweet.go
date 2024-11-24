@@ -12,6 +12,7 @@ type Tweet struct {
 	UserId    uint       `json:"user_id" gorm:"not null"`
 	Favorites []Favorite `json:"favorites"`
 	Comments  []Comment  `json:"comments"`
+	Retweets  []Retweet  `json:"retweets"`
 }
 
 type TweetResponse struct {
@@ -23,4 +24,5 @@ type TweetResponse struct {
 	UpdatedAt time.Time          `json:"updated_at"`
 	Favorites []FavoriteResponse `json:"favorites"`
 	Comments  []CommentResponse  `json:"comments"`
+	Retweets  []RetweetResponse  `json:"retweets"`
 }

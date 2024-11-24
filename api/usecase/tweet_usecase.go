@@ -31,6 +31,7 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 
 	resTweets := []model.TweetResponse{}
 	for _, v := range tweets {
+		//Tweetが持つFavoriteデータを取得
 		var favorites []model.FavoriteResponse
 		for _, fav := range v.Favorites {
 			favorites = append(favorites, model.FavoriteResponse{
@@ -39,6 +40,18 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 				TweetId:   fav.TweetId,
 				CreatedAt: fav.CreatedAt,
 				UpdatedAt: fav.UpdatedAt,
+			})
+		}
+
+		// Tweetが持つRetweetを取得
+		var retweets []model.RetweetResponse
+		for _, ret := range v.Retweets {
+			retweets = append(retweets, model.RetweetResponse{
+				ID:        ret.ID,
+				UserId:    ret.UserId,
+				TweetId:   ret.TweetId,
+				CreatedAt: ret.CreatedAt,
+				UpdatedAt: ret.UpdatedAt,
 			})
 		}
 
@@ -57,6 +70,7 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 				CreatedAt: v.CreatedAt,
 				UpdatedAt: v.UpdatedAt,
 				Favorites: favorites,
+				Retweets:  retweets,
 			}
 			resTweets = append(resTweets, t)
 		} else {
@@ -67,6 +81,7 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 				CreatedAt: v.CreatedAt,
 				UpdatedAt: v.UpdatedAt,
 				Favorites: favorites,
+				Retweets:  retweets,
 			}
 			resTweets = append(resTweets, t)
 		}
