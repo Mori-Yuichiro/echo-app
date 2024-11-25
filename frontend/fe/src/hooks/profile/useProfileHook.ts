@@ -10,7 +10,7 @@ export const useProfileHook = () => {
     const [tab, setTab] = useState<
         "posts" |
         "comments" |
-        "highlights" |
+        "retweets" |
         "articles" |
         "medias" |
         "likes"
