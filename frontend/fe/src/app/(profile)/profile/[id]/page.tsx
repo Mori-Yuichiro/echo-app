@@ -78,9 +78,9 @@ export default function ProfilePage() {
                             </li>
                             <li
                                 className="-mb-px mr-1 w-1/2 text-center cursor-pointer hover:bg-slate-300"
-                                onClick={() => setTab("highlights")}
+                                onClick={() => setTab("retweets")}
                             >
-                                <span className={`inline-block py-1 px-4 text-blue hover:text-blue-darker font-semibold ${tab === "highlights" && "border-b-4 border-blue-300"}`}>Highlights</span>
+                                <span className={`inline-block py-1 px-4 text-blue hover:text-blue-darker font-semibold ${tab === "retweets" && "border-b-4 border-blue-300"}`}>Retweets</span>
                             </li>
                             <li
                                 className="-mb-px mr-1 w-1/2 text-center cursor-pointer hover:bg-slate-300"
@@ -116,6 +116,14 @@ export default function ProfilePage() {
                                 {profile.comments.map(comment => (
                                     <div key={`profile-comment-${comment.id}`}>
                                         <Comment comment={comment} />
+                                    </div>
+                                ))}
+                            </>
+                        ) : (tab === "retweets") ? (
+                            <>
+                                {profile.retweets.map(retweet => (
+                                    <div key={`profile-retweet-${retweet.id}`}>
+                                        <Tweet tweet={retweet.tweet} />
                                     </div>
                                 ))}
                             </>
