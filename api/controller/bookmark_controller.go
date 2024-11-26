@@ -11,6 +11,7 @@ import (
 )
 
 type IBookmarkController interface {
+	GetAllBookmarks(c echo.Context) error
 	CreateBookmark(c echo.Context) error
 	DeleteBookmark(c echo.Context) error
 }
@@ -21,6 +22,18 @@ type bookmarkController struct {
 
 func NewBookmarkController(bu usecase.IBookmarkUsecase) IBookmarkController {
 	return &bookmarkController{bu}
+}
+
+func (bc *bookmarkController) GetAllBookmarks(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	userId := claims["user_id"]
+
+	bookmarkRes, err := bc.bu.GetAllBookmarks(uint(userId.(float64)))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, bookmarkRes)
 }
 
 func (bc *bookmarkController) CreateBookmark(c echo.Context) error {

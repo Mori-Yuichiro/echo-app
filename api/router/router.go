@@ -90,6 +90,13 @@ func NewRouter(
 	tid.POST("/bookmark", bc.CreateBookmark)
 	tid.DELETE("/bookmark", bc.DeleteBookmark)
 
+	b := e.Group("/bookmarks")
+	b.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	b.GET("", bc.GetAllBookmarks)
+
 	c := e.Group("/comment")
 	c.Use(echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(os.Getenv("SECRET")),
