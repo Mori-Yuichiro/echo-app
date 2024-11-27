@@ -1,6 +1,6 @@
 import { TweetType } from "./tweet";
 
-export type FavoriteType = {
+export type BookmarkType = {
     id: number;
     userId: number;
     tweetId: number;

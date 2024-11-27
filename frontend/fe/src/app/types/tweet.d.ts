@@ -1,3 +1,4 @@
+import { BookmarkType } from "./bookmark";
 import { CommentType } from "./comment";
 import { FavoriteType } from "./favorite";
 import { RetweetType } from "./retweet";
@@ -13,4 +14,5 @@ export type TweetType = {
     favorites: FavoriteType[];
     comments: CommentType[];
     retweets: RetweetType[];
+    bookmarks: BookmarkType[]
 }
