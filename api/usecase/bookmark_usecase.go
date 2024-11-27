@@ -52,6 +52,17 @@ func (bu *bookmarkUsecase) GetAllBookmarks(userId uint) ([]model.BookmarkRespons
 			})
 		}
 
+		var bookmarks []model.BookmarkResponse
+		for _, book := range v.Tweet.Bookmarks {
+			bookmarks = append(bookmarks, model.BookmarkResponse{
+				ID:        book.ID,
+				UserId:    book.UserId,
+				TweetId:   book.TweetId,
+				CreatedAt: book.CreatedAt,
+				UpdatedAt: book.UpdatedAt,
+			})
+		}
+
 		// bookmarkしたtweetのimage
 		var image_urls []string
 		if v.Tweet.ImageUrls != "" {
@@ -70,6 +81,7 @@ func (bu *bookmarkUsecase) GetAllBookmarks(userId uint) ([]model.BookmarkRespons
 			User:      v.Tweet.User,
 			Favorites: favorites,
 			Retweets:  retweets,
+			Bookmarks: bookmarks,
 		}
 
 		bookmark := model.BookmarkResponse{

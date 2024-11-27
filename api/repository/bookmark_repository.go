@@ -22,7 +22,7 @@ func NewBookmarkRepository(db *gorm.DB) IBookmarkRepository {
 }
 
 func (br *bookmarkRepository) GetAllBookmarks(bookmarks *[]model.Bookmark, userId uint) error {
-	if err := br.db.Preload("Tweet").Preload("Tweet.User").Preload("Tweet.Favorites").Preload("Tweet.Retweets").Where("user_id=?", userId).Find(bookmarks).Error; err != nil {
+	if err := br.db.Preload("Tweet").Preload("Tweet.User").Preload("Tweet.Favorites").Preload("Tweet.Retweets").Preload("Tweet.Bookmarks").Where("user_id=?", userId).Find(bookmarks).Error; err != nil {
 		return err
 	}
 	return nil
