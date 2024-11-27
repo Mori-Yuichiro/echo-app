@@ -52,6 +52,10 @@ func main() {
 	retweetUsecase := usecase.NewRetweetUsecase(retweetRepository)
 	retweetController := controller.NewRetweetController(retweetUsecase)
 
+	bookmarkRepository := repository.NewBookmarkRepository(db)
+	bookmarkUsecase := usecase.NewBookmarkUsecase(bookmarkRepository)
+	bookmarkController := controller.NewBookmarkController(bookmarkUsecase)
+
 	e := router.NewRouter(
 		userController,
 		imageController,
@@ -59,6 +63,7 @@ func main() {
 		favoriteController,
 		commentController,
 		retweetController,
+		bookmarkController,
 	)
 	e.Logger.Fatal(e.Start(":8080"))
 }

@@ -55,6 +55,18 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 			})
 		}
 
+		// tweetが持つbookmarkデータを取得
+		var bookmarks []model.BookmarkResponse
+		for _, book := range v.Bookmarks {
+			bookmarks = append(bookmarks, model.BookmarkResponse{
+				ID:        book.ID,
+				UserId:    book.UserId,
+				TweetId:   book.TweetId,
+				CreatedAt: book.CreatedAt,
+				UpdatedAt: book.UpdatedAt,
+			})
+		}
+
 		if v.ImageUrls != "" {
 			var image_urls []string
 			err := json.Unmarshal([]byte(v.ImageUrls), &image_urls)
@@ -71,6 +83,7 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 				UpdatedAt: v.UpdatedAt,
 				Favorites: favorites,
 				Retweets:  retweets,
+				Bookmarks: bookmarks,
 			}
 			resTweets = append(resTweets, t)
 		} else {
@@ -82,6 +95,7 @@ func (tu *tweetUsecase) GetAllTweets() ([]model.TweetResponse, error) {
 				UpdatedAt: v.UpdatedAt,
 				Favorites: favorites,
 				Retweets:  retweets,
+				Bookmarks: bookmarks,
 			}
 			resTweets = append(resTweets, t)
 		}
@@ -127,6 +141,17 @@ func (tu *tweetUsecase) GetTweetById(tweetId uint) (model.TweetResponse, error) 
 		})
 	}
 
+	var bookmarks []model.BookmarkResponse
+	for _, book := range tweet.Bookmarks {
+		bookmarks = append(bookmarks, model.BookmarkResponse{
+			ID:        book.ID,
+			UserId:    book.UserId,
+			TweetId:   book.TweetId,
+			CreatedAt: book.CreatedAt,
+			UpdatedAt: book.UpdatedAt,
+		})
+	}
+
 	resTweet := model.TweetResponse{
 		ID:        tweet.ID,
 		Content:   tweet.Content,
@@ -134,6 +159,7 @@ func (tu *tweetUsecase) GetTweetById(tweetId uint) (model.TweetResponse, error) 
 		User:      tweet.User,
 		Favorites: favorites,
 		Comments:  comments,
+		Bookmarks: bookmarks,
 		CreatedAt: tweet.CreatedAt,
 		UpdatedAt: tweet.UpdatedAt,
 	}
