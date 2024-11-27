@@ -86,12 +86,49 @@ export const useTweetHook = (id: number) => {
         }
     }
 
+    const onClickCreateBookmark = async () => {
+        try {
+            if (instance.defaults.headers.common["X-CSRF-Token"] === undefined) {
+                const csrf = await getCsrfToken();
+                instance.defaults.headers.common["X-CSRF-Token"] = csrf;
+            }
+
+            const { status } = await instance.post(
+                `/tweets/${id}/bookmark`,
+                {},
+                { withCredentials: true }
+            )
+            if (status === 200) dispatch(toggleReload(!reload));
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const onClickDeleteBookmark = async () => {
+        try {
+            if (instance.defaults.headers.common["X-CSRF-Token"] === undefined) {
+                const csrf = await getCsrfToken();
+                instance.defaults.headers.common["X-CSRF-Token"] = csrf;
+            }
+
+            const { status } = await instance.delete(
+                `/tweets/${id}/bookmark`,
+                { withCredentials: true }
+            )
+            if (status === 200) dispatch(toggleReload(!reload));
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     return {
         pathName,
         currentUser,
         onClickCreateFavorite,
         onClickDeleteFavorite,
         onClickCreateRetweet,
-        onClickDeleteRetweet
+        onClickDeleteRetweet,
+        onClickCreateBookmark,
+        onClickDeleteBookmark
     };
 }
