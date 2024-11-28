@@ -5,12 +5,14 @@ interface State {
     currentUser: UserType | undefined;
     reload: boolean;
     openModal: boolean;
+    deleteTweetModal: boolean;
 }
 
 const initialState: State = {
     currentUser: undefined,
     reload: false,
-    openModal: false
+    openModal: false,
+    deleteTweetModal: false
 };
 
 const slice = createSlice({
@@ -25,9 +27,17 @@ const slice = createSlice({
         },
         toggleOpenModal(state, action: PayloadAction<boolean>) {
             state.openModal = action.payload;
+        },
+        toggleDeleteTweetModal(state, action: PayloadAction<boolean>) {
+            state.deleteTweetModal = action.payload;
         }
     }
 });
 
-export const { toggleReload, changeCurrentUser, toggleOpenModal } = slice.actions;
+export const {
+    toggleReload,
+    changeCurrentUser,
+    toggleOpenModal,
+    toggleDeleteTweetModal
+} = slice.actions;
 export default slice.reducer;

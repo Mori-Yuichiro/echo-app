@@ -1,7 +1,7 @@
 import axiosInstance from "@/lib/axiosInstance";
 import { getCsrfToken } from "@/lib/csrf_lib";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { toggleReload } from "@/store/slice/slice";
+import { toggleDeleteTweetModal, toggleReload } from "@/store/slice/slice";
 import { usePathname } from "next/navigation"
 
 export const useTweetHook = (id: number) => {
@@ -9,7 +9,8 @@ export const useTweetHook = (id: number) => {
 
     const pathName = usePathname();
     const currentUser = useAppSelector(state => state.slice.currentUser);
-    const reload = useAppSelector(status => status.slice.reload);
+    const reload = useAppSelector(state => state.slice.reload);
+    const deleteTweetModal = useAppSelector(state => state.slice.deleteTweetModal);
     const dispatch = useAppDispatch();
 
     const onClickCreateFavorite = async () => {
@@ -121,6 +122,10 @@ export const useTweetHook = (id: number) => {
         }
     }
 
+    const onClickDeleteTweetModal = () => {
+        dispatch(toggleDeleteTweetModal(!deleteTweetModal));
+    }
+
     return {
         pathName,
         currentUser,
@@ -129,6 +134,8 @@ export const useTweetHook = (id: number) => {
         onClickCreateRetweet,
         onClickDeleteRetweet,
         onClickCreateBookmark,
-        onClickDeleteBookmark
+        onClickDeleteBookmark,
+        deleteTweetModal,
+        onClickDeleteTweetModal
     };
 }
