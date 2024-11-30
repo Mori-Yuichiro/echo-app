@@ -267,6 +267,30 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		retweets = append(retweets, retweet)
 	}
 
+	// userのfollowerデータ
+	var followers []model.RelationshipResponse
+	for _, follower := range user.Followers {
+		followers = append(followers, model.RelationshipResponse{
+			ID:         follower.ID,
+			FollowerId: follower.FollowerId,
+			FollowedId: follower.FollowedId,
+			CreatedAt:  follower.CreatedAt,
+			UpdatedAt:  follower.UpdatedAt,
+		})
+	}
+
+	// userのfollowedデータ
+	var followeds []model.RelationshipResponse
+	for _, followed := range user.Followeds {
+		followeds = append(followeds, model.RelationshipResponse{
+			ID:         followed.ID,
+			FollowerId: followed.FollowerId,
+			FollowedId: followed.FollowedId,
+			CreatedAt:  followed.CreatedAt,
+			UpdatedAt:  followed.UpdatedAt,
+		})
+	}
+
 	resUser := model.UserResponse{
 		ID:              user.ID,
 		Email:           user.Email,
@@ -283,6 +307,8 @@ func (uu *userUsecase) GetUserById(id uint) (model.UserResponse, error) {
 		Favorites:       favorites,
 		Comments:        comments,
 		Retweets:        retweets,
+		Followers:       followers,
+		Followeds:       followeds,
 	}
 	return resUser, nil
 }

@@ -15,8 +15,12 @@ export default function ProfilePage() {
         tab,
         setTab,
         openModal,
-        onClickToggleModal
+        onClickToggleModal,
+        onClickCreateRelationship,
+        onClickDeleteRelationship
     } = useProfileHook();
+
+    console.log(profile);
 
     return (
         <>
@@ -46,9 +50,19 @@ export default function ProfilePage() {
                                         onClick={onClickToggleModal}
                                     >Edit Profile</Button>
                                 ) : (
-                                    <Button
-                                        className="rounded-full border border-black px-2 py-1"
-                                    >Follow</Button>
+                                    <>
+                                        {(profile.followeds && profile.followeds.filter(followed => followed.followed_id === currentUser?.id)) ? (
+                                            <Button
+                                                className="rounded-full bg-slate-400 text-white px-2 py-1"
+                                                onClick={onClickDeleteRelationship}
+                                            >Following</Button>
+                                        ) : (
+                                            <Button
+                                                className="rounded-full border border-black px-2 py-1"
+                                                onClick={onClickCreateRelationship}
+                                            >Follow</Button>
+                                        )}
+                                    </>
                                 )}
                             </div>
                         </div>
@@ -57,8 +71,8 @@ export default function ProfilePage() {
                             <p>{profile.bio}</p>
                             <p>{profile.website}</p>
                             <div className="flex gap-x-3">
-                                <p>0 Following</p>
-                                <p>0 Followers</p>
+                                <p>{profile.followers ? profile.followers.length : 0} Following</p>
+                                <p>{profile.followeds ? profile.followeds.length : 0} Followers</p>
                             </div>
                         </div>
                         <ul className="list-reset flex border-b border-black overflow-x-auto">

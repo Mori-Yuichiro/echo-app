@@ -18,6 +18,7 @@ func NewRouter(
 	cc controller.ICommentController,
 	rc controller.IRetweetController,
 	bc controller.IBookmarkController,
+	relc controller.IRelationshipController,
 ) *echo.Echo {
 	e := echo.New()
 
@@ -62,6 +63,15 @@ func NewRouter(
 	u.GET("", uc.GetUserIdByToken)
 	u.GET("/:userId", uc.GetUserById)
 	u.PUT("", uc.UpdateUser)
+
+	// Follow
+	r := u.Group("/:userId")
+	r.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	r.POST("/follow", relc.CreateRelationship)
+	r.DELETE("/follow", relc.DeleteRelationship)
 
 	i := e.Group("/image-upload")
 	i.Use(echojwt.WithConfig(echojwt.Config{
