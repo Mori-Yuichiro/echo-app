@@ -39,7 +39,11 @@ func (ur *userRepository) GetUserById(user *model.User, id uint) error {
 		return db.Order("created_at desc")
 	}).Preload("Comments.User").Preload("Retweets", func(db *gorm.DB) *gorm.DB {
 		return db.Order("created_at desc")
-	}).Preload("Retweets.Tweet").Preload("Retweets.Tweet.User").Preload("Retweets.Tweet.Favorites").Preload("Retweets.Tweet.Retweets").Where("id=?", id).Find(user).Error; err != nil {
+	}).Preload("Retweets.Tweet").Preload("Retweets.Tweet.User").Preload("Retweets.Tweet.Favorites").Preload("Retweets.Tweet.Retweets").Preload("Followers", func(db *gorm.DB) *gorm.DB {
+		return db.Where("followed_id=?", id)
+	}).Preload("Followeds", func(db *gorm.DB) *gorm.DB {
+		return db.Where("follower_id=?", id)
+	}).Where("id=?", id).Find(user).Error; err != nil {
 		return err
 	}
 	return nil
