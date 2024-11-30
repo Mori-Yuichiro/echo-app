@@ -56,6 +56,10 @@ func main() {
 	bookmarkUsecase := usecase.NewBookmarkUsecase(bookmarkRepository)
 	bookmarkController := controller.NewBookmarkController(bookmarkUsecase)
 
+	relationshipRepository := repository.NewRelationshipRepository(db)
+	relationshipUsecase := usecase.NewRelationshipUsecase(relationshipRepository)
+	relationshipController := controller.NewRelationshipController(relationshipUsecase)
+
 	e := router.NewRouter(
 		userController,
 		imageController,
@@ -64,6 +68,7 @@ func main() {
 		commentController,
 		retweetController,
 		bookmarkController,
+		relationshipController,
 	)
 	e.Logger.Fatal(e.Start(":8080"))
 }
