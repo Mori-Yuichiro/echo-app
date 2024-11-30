@@ -1,5 +1,6 @@
 import { CommentType } from "./comment";
 import { FavoriteType } from "./favorite";
+import { RelationshipType } from "./relationship";
 import { RetweetType } from "./retweet";
 import { TweetType } from "./tweet";
 import { UserType } from "./user";
@@ -9,4 +10,6 @@ export type ProfileType =
     { tweets: TweetType[] } &
     { favorites: FavoriteType[] } &
     { comments: CommentType[] } &
-    { retweets: RetweetType[] }
+    { retweets: RetweetType[] } &
+    { followers: RelationshipType[] } &
+    { followeds: RelationshipType[] }

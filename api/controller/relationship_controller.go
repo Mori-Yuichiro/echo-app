@@ -30,8 +30,8 @@ func (rc *relationshipController) CreateRelationship(c echo.Context) error {
 
 	id := c.Param("userId")
 	intId, _ := strconv.Atoi(id)
-	followedId := uint(intId)
-	followerId := uint(userId.(float64))
+	followerId := uint(intId)
+	followedId := uint(userId.(float64))
 
 	relationship := model.Relationship{
 		FollowerId: followerId,
@@ -52,8 +52,8 @@ func (rc *relationshipController) DeleteRelationship(c echo.Context) error {
 
 	id := c.Param("userId")
 	intId, _ := strconv.Atoi(id)
-	followedId := uint(intId)
-	followerId := uint(userId.(float64))
+	followerId := uint(intId)
+	followedId := uint(userId.(float64))
 
 	err := rc.ru.DeleteRelationship(followerId, followedId)
 	if err != nil {
