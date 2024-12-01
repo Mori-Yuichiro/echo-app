@@ -6,6 +6,7 @@ import Loading from "@/components/Loading";
 import Modal from "@/components/modal/Modal";
 import Tweet from "@/components/tweet/Tweet";
 import { useProfileHook } from "@/hooks/profile/useProfileHook";
+import Link from "next/link";
 
 export default function ProfilePage() {
     const {
@@ -19,8 +20,6 @@ export default function ProfilePage() {
         onClickCreateRelationship,
         onClickDeleteRelationship
     } = useProfileHook();
-
-    console.log(profile);
 
     return (
         <>
@@ -51,7 +50,7 @@ export default function ProfilePage() {
                                     >Edit Profile</Button>
                                 ) : (
                                     <>
-                                        {(profile.followeds && profile.followeds.filter(followed => followed.followed_id === currentUser?.id)) ? (
+                                        {(profile.followers && profile.followers.filter(follower => follower.follower_id === currentUser?.id)) ? (
                                             <Button
                                                 className="rounded-full bg-slate-400 text-white px-2 py-1"
                                                 onClick={onClickDeleteRelationship}
@@ -71,8 +70,12 @@ export default function ProfilePage() {
                             <p>{profile.bio}</p>
                             <p>{profile.website}</p>
                             <div className="flex gap-x-3">
-                                <p>{profile.followers ? profile.followers.length : 0} Following</p>
-                                <p>{profile.followeds ? profile.followeds.length : 0} Followers</p>
+                                <Link href={`/profile/${profile.id}/followeds`}>
+                                    <p>{profile.followeds ? profile.followeds.length : 0} Followings</p>
+                                </Link>
+                                <Link href={`/profile/${profile.id}/followers`}>
+                                    <p>{profile.followers ? profile.followers.length : 0} Followers</p>
+                                </Link>
                             </div>
                         </div>
                         <ul className="list-reset flex border-b border-black overflow-x-auto">

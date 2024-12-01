@@ -13,9 +13,11 @@ type Relationship struct {
 }
 
 type RelationshipResponse struct {
-	ID         uint      `json:"id" gorm:"primaryKey"`
-	FollowerId uint      `json:"follower_id" gorm:"not null; uniqueIndex:idx_follow_follower"`
-	FollowedId uint      `json:"followed_id" gorm:"not null; uniqueIndex:idx_follow_follower"`
-	CreatedAt  time.Time `json:"created_at"`
-	UpdatedAt  time.Time `json:"updated_at"`
+	ID         uint         `json:"id" gorm:"primaryKey"`
+	FollowerId uint         `json:"follower_id" gorm:"not null; uniqueIndex:idx_follow_follower"`
+	FollowedId uint         `json:"followed_id" gorm:"not null; uniqueIndex:idx_follow_follower"`
+	CreatedAt  time.Time    `json:"created_at"`
+	UpdatedAt  time.Time    `json:"updated_at"`
+	Follower   UserResponse `json:"follower"`
+	Followed   UserResponse `json:"followed"`
 }
