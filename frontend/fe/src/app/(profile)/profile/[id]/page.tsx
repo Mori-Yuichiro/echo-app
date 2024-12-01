@@ -70,7 +70,9 @@ export default function ProfilePage() {
                             <p>{profile.bio}</p>
                             <p>{profile.website}</p>
                             <div className="flex gap-x-3">
-                                <p>{profile.followeds ? profile.followeds.length : 0} Followings</p>
+                                <Link href={`/profile/${profile.id}/followeds`}>
+                                    <p>{profile.followeds ? profile.followeds.length : 0} Followings</p>
+                                </Link>
                                 <Link href={`/profile/${profile.id}/followers`}>
                                     <p>{profile.followers ? profile.followers.length : 0} Followers</p>
                                 </Link>

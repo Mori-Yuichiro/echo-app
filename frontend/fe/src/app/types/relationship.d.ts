@@ -7,4 +7,5 @@ export type RelationshipType = {
     createdAt: Datetime;
     updatedAt: Datetime;
     follower: UserType;
+    followed: UserType;
 }
