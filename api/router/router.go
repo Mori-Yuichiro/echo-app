@@ -73,6 +73,9 @@ func NewRouter(
 	r.POST("/follow", relc.CreateRelationship)
 	r.DELETE("/follow", relc.DeleteRelationship)
 
+	r.GET("/followers", relc.GetFollowersById)
+	r.GET("/followeds", relc.GetFollowedsById)
+
 	i := e.Group("/image-upload")
 	i.Use(echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(os.Getenv("SECRET")),

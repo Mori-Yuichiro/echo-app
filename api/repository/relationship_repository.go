@@ -8,6 +8,8 @@ import (
 )
 
 type IRelationshipRepository interface {
+	GetFollowersById(relationship *[]model.Relationship, userId uint) error
+	GetFollowedsById(relationship *[]model.Relationship, userId uint) error
 	CreateRelationship(relationship *model.Relationship) error
 	DeleteRelationship(followerId uint, followedId uint) error
 }
@@ -18,6 +20,20 @@ type relationshipRepository struct {
 
 func NewRelationshipRepository(db *gorm.DB) IRelationshipRepository {
 	return &relationshipRepository{db}
+}
+
+func (rr *relationshipRepository) GetFollowersById(relationship *[]model.Relationship, userId uint) error {
+	if err := rr.db.Preload("Follower").Where("followed_id", userId).Find(relationship).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (rr *relationshipRepository) GetFollowedsById(relationship *[]model.Relationship, userId uint) error {
+	if err := rr.db.Preload("Followed").Where("follower_id", userId).Find(relationship).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (rr *relationshipRepository) CreateRelationship(relationship *model.Relationship) error {
