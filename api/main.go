@@ -60,6 +60,14 @@ func main() {
 	relationshipUsecase := usecase.NewRelationshipUsecase(relationshipRepository)
 	relationshipController := controller.NewRelationshipController(relationshipUsecase)
 
+	roomRepository := repository.NewRoomRepository(db)
+	roomUsecase := usecase.NewRoomUsecase(roomRepository)
+	roomController := controller.NewRoomController(roomUsecase)
+
+	entryRepository := repository.NewEntryRepository(db)
+	entryUsecase := usecase.NewEntryUsecase(entryRepository)
+	entryController := controller.NewEntryController(entryUsecase)
+
 	e := router.NewRouter(
 		userController,
 		imageController,
@@ -69,6 +77,8 @@ func main() {
 		retweetController,
 		bookmarkController,
 		relationshipController,
+		roomController,
+		entryController,
 	)
 	e.Logger.Fatal(e.Start(":8080"))
 }
