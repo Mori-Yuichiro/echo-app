@@ -14,10 +14,11 @@ type Message struct {
 }
 
 type MessageResponse struct {
-	ID        uint      `json:"id" gorm:"primaryKey"`
-	UserId    uint      `json:"user_id" gorm:"not null"`
-	RoomId    uint      `json:"room_id" gorm:"not null"`
-	Message   string    `json:"message" gorm:"not null; default:''"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        uint         `json:"id" gorm:"primaryKey"`
+	UserId    uint         `json:"user_id" gorm:"not null"`
+	RoomId    uint         `json:"room_id" gorm:"not null"`
+	Message   string       `json:"message" gorm:"not null; default:''"`
+	CreatedAt time.Time    `json:"created_at"`
+	UpdatedAt time.Time    `json:"updated_at"`
+	User      UserResponse `json:"user" gorm:"not null"`
 }
