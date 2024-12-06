@@ -13,9 +13,10 @@ type Entry struct {
 }
 
 type EntryResponse struct {
-	ID        uint      `json:"id" gorm:"primaryKey"`
-	UserId    uint      `json:"user_id" gorm:"not null"`
-	RoomId    uint      `json:"room_id" gorm:"not null"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        uint         `json:"id" gorm:"primaryKey"`
+	UserId    uint         `json:"user_id" gorm:"not null"`
+	RoomId    uint         `json:"room_id" gorm:"not null"`
+	CreatedAt time.Time    `json:"created_at"`
+	UpdatedAt time.Time    `json:"updated_at"`
+	User      UserResponse `json:"user"`
 }
