@@ -20,7 +20,7 @@ func NewMessageRepository(db *gorm.DB) IMessageRepository {
 }
 
 func (mr *messageRepository) GetAllMessages(message *[]model.Message) error {
-	if err := mr.db.Preload("User").Order("created_at DESC").Find(message).Error; err != nil {
+	if err := mr.db.Preload("User").Find(message).Error; err != nil {
 		return err
 	}
 	return nil
