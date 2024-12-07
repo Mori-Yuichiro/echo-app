@@ -24,6 +24,7 @@ func main() {
 	userValidator := validator.NewUserValidator()
 	tweetValidator := validator.NewTweetValidator()
 	commentValidator := validator.NewCommentValidator()
+	messageValidator := validator.NewMessageValidator()
 
 	userRepository := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
@@ -60,6 +61,18 @@ func main() {
 	relationshipUsecase := usecase.NewRelationshipUsecase(relationshipRepository)
 	relationshipController := controller.NewRelationshipController(relationshipUsecase)
 
+	roomRepository := repository.NewRoomRepository(db)
+	roomUsecase := usecase.NewRoomUsecase(roomRepository)
+	roomController := controller.NewRoomController(roomUsecase)
+
+	entryRepository := repository.NewEntryRepository(db)
+	entryUsecase := usecase.NewEntryUsecase(entryRepository)
+	entryController := controller.NewEntryController(entryUsecase)
+
+	messageRepository := repository.NewMessageRepository(db)
+	messageUsecase := usecase.NewMessageUsecase(messageRepository, messageValidator)
+	messageController := controller.NewMessageController(messageUsecase)
+
 	e := router.NewRouter(
 		userController,
 		imageController,
@@ -69,6 +82,9 @@ func main() {
 		retweetController,
 		bookmarkController,
 		relationshipController,
+		roomController,
+		entryController,
+		messageController,
 	)
 	e.Logger.Fatal(e.Start(":8080"))
 }

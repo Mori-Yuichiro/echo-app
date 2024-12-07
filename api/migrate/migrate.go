@@ -18,5 +18,8 @@ func main() {
 		&model.Retweet{},
 		&model.Bookmark{},
 		&model.Relationship{},
+		&model.Entry{},
+		&model.Room{},
+		&model.Message{},
 	)
 }

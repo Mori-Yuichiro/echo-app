@@ -19,6 +19,9 @@ func NewRouter(
 	rc controller.IRetweetController,
 	bc controller.IBookmarkController,
 	relc controller.IRelationshipController,
+	rmc controller.IRoomController,
+	ec controller.IEntryController,
+	mc controller.IMessageController,
 ) *echo.Echo {
 	e := echo.New()
 
@@ -116,6 +119,32 @@ func NewRouter(
 		TokenLookup: "cookie:token",
 	}))
 	c.POST("", cc.CreateComment)
+
+	// room
+	room := e.Group("/room")
+	room.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	room.POST("", rmc.CreateRoom)
+
+	// entry
+	entry := e.Group("/entry")
+	entry.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	entry.GET("/:roomId", ec.GetEntryByUserId)
+	entry.POST("", ec.CreateEntry)
+
+	// message
+	m := room.Group("/:roomId")
+	m.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	m.GET("/messages", mc.GetAllMessages)
+	m.POST("/message", mc.CreateMessage)
 
 	return e
 }

@@ -2,7 +2,7 @@
 
 import Follow from "@/components/follow/Follow";
 import Loading from "@/components/Loading"
-import { useFollowersHook } from "@/hooks/follow/useFollowersHook"
+import { useFollowersHook } from "@/hooks/follow/useFollowersHook";
 
 export default function Followers() {
     const {
