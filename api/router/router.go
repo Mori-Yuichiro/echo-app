@@ -126,6 +126,7 @@ func NewRouter(
 		SigningKey:  []byte(os.Getenv("SECRET")),
 		TokenLookup: "cookie:token",
 	}))
+	room.GET("", rmc.GetRooms)
 	room.POST("", rmc.CreateRoom)
 
 	// entry

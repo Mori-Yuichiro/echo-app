@@ -10,6 +10,7 @@ import (
 )
 
 type IRoomController interface {
+	GetRooms(c echo.Context) error
 	CreateRoom(c echo.Context) error
 }
 
@@ -19,6 +20,22 @@ type roomController struct {
 
 func NewRoomController(ru usecase.IRoomUsecase) IRoomController {
 	return &roomController{ru}
+}
+
+func (rc *roomController) GetRooms(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	userId := claims["user_id"]
+
+	if userId == nil {
+		return c.JSON(http.StatusInternalServerError, "you don't userId")
+	}
+
+	roomsRes, err := rc.ru.GetRooms()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, roomsRes)
 }
 
 func (rc *roomController) CreateRoom(c echo.Context) error {
