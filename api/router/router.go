@@ -135,7 +135,8 @@ func NewRouter(
 		SigningKey:  []byte(os.Getenv("SECRET")),
 		TokenLookup: "cookie:token",
 	}))
-	entry.GET("/:roomId", ec.GetEntryByUserId)
+	entry.GET("/:userId", ec.GetEntryByUserId)
+	entry.GET("/room/:roomId", ec.GetEntryByRoomAndUserId)
 	entry.POST("", ec.CreateEntry)
 
 	// message

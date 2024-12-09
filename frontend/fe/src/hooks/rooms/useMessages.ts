@@ -3,7 +3,7 @@ import { MessageType } from "@/app/types/message";
 import axiosInstance from "@/lib/axiosInstance"
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleMessageModal } from "@/store/slice/slice";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export const useMessages = () => {
@@ -26,7 +26,7 @@ export const useMessages = () => {
     useEffect(() => {
         const fetchData = async () => {
             const resEntry = await instance.get(
-                `/entry/${id}`,
+                `/entry/room/${id}`,
                 { withCredentials: true }
             );
             setEntry(resEntry.data);
@@ -38,7 +38,7 @@ export const useMessages = () => {
             setMessages(resMessagse.data);
         }
         fetchData();
-    }, [reload])
+    }, [reload, currentUser])
 
     return {
         router,

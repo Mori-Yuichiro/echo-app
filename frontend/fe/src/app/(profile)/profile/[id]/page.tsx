@@ -18,7 +18,9 @@ export default function ProfilePage() {
         openModal,
         onClickToggleModal,
         onClickCreateRelationship,
-        onClickDeleteRelationship
+        onClickDeleteRelationship,
+        commonRoomId,
+        isRoom
     } = useProfileHook();
 
     return (
@@ -50,6 +52,20 @@ export default function ProfilePage() {
                                     >Edit Profile</Button>
                                 ) : (
                                     <>
+                                        {isRoom ? (
+                                            <Link
+                                                className="border-black border rounded-full p-2"
+                                                href={`/rooms/${commonRoomId}`}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><path d="m22 6l-10 7L2 6" /></g></svg>
+                                            </Link>
+                                        ) : (
+                                            <div
+                                                className="border-black border rounded-full p-2 cursor-pointer"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><path d="m22 6l-10 7L2 6" /></g></svg>
+                                            </div>
+                                        )}
                                         {(profile.followers && profile.followers.filter(follower => follower.follower_id === currentUser?.id)) ? (
                                             <Button
                                                 className="rounded-full bg-slate-400 text-white px-2 py-1"
