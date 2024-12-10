@@ -84,6 +84,44 @@ export const useProfileHook = () => {
         }
     }, [entries, anotherEntries])
 
+    const onClickCreateRoom = async () => {
+        try {
+            if (instance.defaults.headers.common["X-CSRF-Token"] === undefined) {
+                const csrf = await getCsrfToken();
+                instance.defaults.headers.common["X-CSRF-Token"] = csrf;
+            }
+
+            const resRoom = await instance.post(
+                "/room",
+                {},
+                { withCredentials: true }
+            );
+
+            if (resRoom.status === 200) {
+                const resCurrentUserEntry = await instance.post(
+                    "/entry",
+                    {
+                        user_id: currentUser?.id,
+                        room_id: resRoom.data.id
+                    },
+                    { withCredentials: true }
+                );
+                const resAnotherUserEntry = await instance.post(
+                    "/entry",
+                    {
+                        user_id: profile?.id,
+                        room_id: resRoom.data.id
+                    },
+                    { withCredentials: true }
+                );
+
+                if (resCurrentUserEntry.status === 200 && resAnotherUserEntry.status === 200) router.push(`/rooms/${resRoom.data.id}`);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             if (!currentUser) return;
@@ -124,6 +162,7 @@ export const useProfileHook = () => {
         onClickCreateRelationship,
         onClickDeleteRelationship,
         commonRoomId,
-        isRoom
+        isRoom,
+        onClickCreateRoom
     };
 }

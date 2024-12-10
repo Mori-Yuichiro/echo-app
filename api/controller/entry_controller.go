@@ -68,12 +68,15 @@ func (ec *entryController) CreateEntry(c echo.Context) error {
 	claims := user.Claims.(jwt.MapClaims)
 	userId := claims["user_id"]
 
+	if userId == nil {
+		return c.JSON(http.StatusInternalServerError, "you don't have userId")
+	}
+
 	entry := model.Entry{}
 	if err := c.Bind(&entry); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	entry.UserId = uint(userId.(float64))
 	err := ec.eu.CreateEntry(entry)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
