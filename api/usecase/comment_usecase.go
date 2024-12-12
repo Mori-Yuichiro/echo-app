@@ -38,7 +38,7 @@ func (cu *commentUsecase) CreateComment(comment model.Comment, visitedId uint) (
 		return model.CommentResponse{}, err
 	}
 
-	if err := cu.cr.CreateComment(&comment); err != nil {
+	if err := cu.cr.CreateComment(tx, &comment); err != nil {
 		tx.Rollback()
 		return model.CommentResponse{}, err
 	}
@@ -52,10 +52,14 @@ func (cu *commentUsecase) CreateComment(comment model.Comment, visitedId uint) (
 			Read:      false,
 		}
 
-		if err := cu.nr.CreateNotification(&notification); err != nil {
+		if err := cu.nr.CreateNotification(tx, &notification); err != nil {
 			tx.Rollback()
 			return model.CommentResponse{}, err
 		}
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		return model.CommentResponse{}, err
 	}
 
 	resComment := model.CommentResponse{

@@ -7,7 +7,7 @@ import (
 )
 
 type INotificationRepository interface {
-	CreateNotification(notification *model.Notification) error
+	CreateNotification(tx *gorm.DB, notification *model.Notification) error
 }
 
 type notificationRepository struct {
@@ -18,8 +18,8 @@ func NewNotificationRepository(db *gorm.DB) INotificationRepository {
 	return &notificationRepository{db}
 }
 
-func (nr *notificationRepository) CreateNotification(notification *model.Notification) error {
-	if err := nr.db.Create(notification).Error; err != nil {
+func (nr *notificationRepository) CreateNotification(tx *gorm.DB, notification *model.Notification) error {
+	if err := tx.Create(notification).Error; err != nil {
 		return nil
 	}
 	return nil
