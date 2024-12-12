@@ -21,5 +21,6 @@ func main() {
 		&model.Entry{},
 		&model.Room{},
 		&model.Message{},
+		&model.Notification{},
 	)
 }

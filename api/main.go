@@ -26,6 +26,8 @@ func main() {
 	commentValidator := validator.NewCommentValidator()
 	messageValidator := validator.NewMessageValidator()
 
+	notificationRepository := repository.NewNotificationRepository(db)
+
 	userRepository := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
 	userController := controller.NewUserController(userUsecase)
@@ -46,6 +48,8 @@ func main() {
 	commentUsecase := usecase.NewCommentUsecase(
 		commentRepository,
 		commentValidator,
+		notificationRepository,
+		db,
 	)
 	commentController := controller.NewCommentController(commentUsecase)
 

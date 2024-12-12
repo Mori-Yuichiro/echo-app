@@ -113,7 +113,7 @@ func NewRouter(
 	}))
 	b.GET("", bc.GetAllBookmarks)
 
-	c := e.Group("/comment")
+	c := e.Group("/:visitedId/comment")
 	c.Use(echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(os.Getenv("SECRET")),
 		TokenLookup: "cookie:token",
