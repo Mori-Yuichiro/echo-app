@@ -39,7 +39,12 @@ func (fc *favoriteController) CreateFavorite(c echo.Context) error {
 		TweetId: uint(tweetId),
 	}
 
-	favoriteRes, err := fc.fu.CreateFavorite(favorite)
+	visitedId, err := strconv.ParseFloat(c.Param("visitedId"), 64)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	favoriteRes, err := fc.fu.CreateFavorite(favorite, uint(visitedId))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

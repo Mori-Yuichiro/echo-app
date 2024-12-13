@@ -1,10 +1,11 @@
+import { TweetType } from "@/app/types/tweet";
 import axiosInstance from "@/lib/axiosInstance";
 import { getCsrfToken } from "@/lib/csrf_lib";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleDeleteTweetModal, toggleReload } from "@/store/slice/slice";
 import { usePathname } from "next/navigation"
 
-export const useTweetHook = (id: number) => {
+export const useTweetHook = (tweet: TweetType) => {
     const { instance } = axiosInstance();
 
     const pathName = usePathname();
@@ -21,7 +22,7 @@ export const useTweetHook = (id: number) => {
             }
 
             const { status } = await instance.post(
-                `/tweets/${id}/favorite`,
+                `/tweets/${tweet.id}/${tweet.user.id}/favorite`,
                 {},
                 { withCredentials: true }
             );
@@ -40,7 +41,7 @@ export const useTweetHook = (id: number) => {
             }
 
             const { status } = await instance.delete(
-                `/tweets/${id}/favorite`,
+                `/tweets/${tweet.id}/favorite`,
                 { withCredentials: true }
             );
 
@@ -58,7 +59,7 @@ export const useTweetHook = (id: number) => {
             }
 
             const { status } = await instance.post(
-                `/tweets/${id}/retweet`,
+                `/tweets/${tweet.id}/retweet`,
                 {},
                 { withCredentials: true }
             );
@@ -77,7 +78,7 @@ export const useTweetHook = (id: number) => {
             }
 
             const { status } = await instance.delete(
-                `/tweets/${id}/retweet`,
+                `/tweets/${tweet.id}/retweet`,
                 { withCredentials: true }
             );
 
@@ -95,7 +96,7 @@ export const useTweetHook = (id: number) => {
             }
 
             const { status } = await instance.post(
-                `/tweets/${id}/bookmark`,
+                `/tweets/${tweet.id}/bookmark`,
                 {},
                 { withCredentials: true }
             )
@@ -113,7 +114,7 @@ export const useTweetHook = (id: number) => {
             }
 
             const { status } = await instance.delete(
-                `/tweets/${id}/bookmark`,
+                `/tweets/${tweet.id}/bookmark`,
                 { withCredentials: true }
             )
             if (status === 200) dispatch(toggleReload(!reload));

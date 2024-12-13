@@ -47,7 +47,7 @@ func (cu *commentUsecase) CreateComment(comment model.Comment, visitedId uint) (
 		notification := model.Notification{
 			VisitorId: comment.UserId,
 			VisitedId: visitedId,
-			TweetId:   comment.TweetId,
+			TweetId:   &comment.TweetId,
 			Action:    "comment",
 			Read:      false,
 		}

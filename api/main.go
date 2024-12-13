@@ -41,7 +41,7 @@ func main() {
 	tweetController := controller.NewTweetController(tweetUsecase)
 
 	favoriteRepository := repository.NewFavoriteRepository(db)
-	favoriteUsecase := usecase.NewFavoriteUsecase(favoriteRepository)
+	favoriteUsecase := usecase.NewFavoriteUsecase(favoriteRepository, notificationRepository, db)
 	favoriteController := controller.NewFavoriteController(favoriteUsecase)
 
 	commentRepository := repository.NewCommentRepository(db)

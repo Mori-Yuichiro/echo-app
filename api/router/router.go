@@ -97,7 +97,7 @@ func NewRouter(
 	t.DELETE("/:tweetId", tc.DeleteTweet)
 
 	tid := t.Group("/:tweetId")
-	tid.POST("/favorite", fc.CreateFavorite)
+	tid.POST("/:visitedId/favorite", fc.CreateFavorite)
 	tid.DELETE("/favorite", fc.DeleteFavorite)
 
 	tid.POST("/retweet", rc.CreateRetweet)
