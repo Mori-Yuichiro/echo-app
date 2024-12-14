@@ -22,6 +22,7 @@ func NewRouter(
 	rmc controller.IRoomController,
 	ec controller.IEntryController,
 	mc controller.IMessageController,
+	nc controller.INotificationController,
 ) *echo.Echo {
 	e := echo.New()
 
@@ -147,6 +148,13 @@ func NewRouter(
 	}))
 	m.GET("/messages", mc.GetAllMessages)
 	m.POST("/message", mc.CreateMessage)
+
+	n := e.Group("/notifications")
+	n.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey:  []byte(os.Getenv("SECRET")),
+		TokenLookup: "cookie:token",
+	}))
+	n.GET("", nc.GetNotificationsByUserId)
 
 	return e
 }

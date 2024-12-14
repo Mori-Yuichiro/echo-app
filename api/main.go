@@ -27,6 +27,8 @@ func main() {
 	messageValidator := validator.NewMessageValidator()
 
 	notificationRepository := repository.NewNotificationRepository(db)
+	notificationUsecase := usecase.NewNotificationUsecase(notificationRepository)
+	notificationController := controller.NewNotificationController(notificationUsecase)
 
 	userRepository := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
@@ -89,6 +91,7 @@ func main() {
 		roomController,
 		entryController,
 		messageController,
+		notificationController,
 	)
 	e.Logger.Fatal(e.Start(":8080"))
 }

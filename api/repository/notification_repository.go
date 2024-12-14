@@ -7,6 +7,7 @@ import (
 )
 
 type INotificationRepository interface {
+	GetNotificationsByUserId(notifications *[]model.Notification, userId uint) error
 	CreateNotification(tx *gorm.DB, notification *model.Notification) error
 }
 
@@ -16,6 +17,13 @@ type notificationRepository struct {
 
 func NewNotificationRepository(db *gorm.DB) INotificationRepository {
 	return &notificationRepository{db}
+}
+
+func (nr *notificationRepository) GetNotificationsByUserId(notifications *[]model.Notification, userId uint) error {
+	if err := nr.db.Preload("Visitor").Preload("Tweet").Where("visited_id=?", userId).Order("id DESC").Find(notifications).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (nr *notificationRepository) CreateNotification(tx *gorm.DB, notification *model.Notification) error {
