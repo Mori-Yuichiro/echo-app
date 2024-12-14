@@ -138,7 +138,7 @@ export default function ProfilePage() {
                         </ul>
                         {tab === "posts" ? (
                             <>
-                                {profile.tweets.map(tweet => (
+                                {profile.tweets && profile.tweets.map(tweet => (
                                     <div
                                         key={`profile-tweet-${tweet.id}`}
                                         className="border-black border-b">
@@ -148,7 +148,7 @@ export default function ProfilePage() {
                             </>
                         ) : (tab === "comments") ? (
                             <>
-                                {profile.comments.map(comment => (
+                                {profile.comments && profile.comments.map(comment => (
                                     <div key={`profile-comment-${comment.id}`}>
                                         <Comment comment={comment} />
                                     </div>
@@ -156,7 +156,7 @@ export default function ProfilePage() {
                             </>
                         ) : (tab === "retweets") ? (
                             <>
-                                {profile.retweets.map(retweet => (
+                                {profile.retweets && profile.retweets.map(retweet => (
                                     <div key={`profile-retweet-${retweet.id}`}>
                                         <Tweet tweet={retweet.tweet} />
                                     </div>
@@ -164,7 +164,7 @@ export default function ProfilePage() {
                             </>
                         ) : (tab === "likes") ? (
                             <>
-                                {profile.favorites.map(favorite => (
+                                {profile.favorites && profile.favorites.map(favorite => (
                                     <div key={`profile-favorite-${favorite.id}`}>
                                         <Tweet tweet={favorite.tweet} />
                                     </div>
