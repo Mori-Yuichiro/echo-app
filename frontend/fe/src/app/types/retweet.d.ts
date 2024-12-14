@@ -2,9 +2,9 @@ import { TweetType } from "./tweet";
 
 export type RetweetType = {
     id: number;
-    userId: number;
-    tweetId: number;
+    user_id: number;
+    tweet_id: number;
     tweet: TweetType
-    createdAt: Datetime;
-    updatedAt: Datetime;
+    created_at: Datetime;
+    updated_at: Datetime;
 }
