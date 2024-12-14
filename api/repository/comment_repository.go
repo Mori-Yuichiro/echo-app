@@ -7,7 +7,7 @@ import (
 )
 
 type ICommentRepository interface {
-	CreateComment(comment *model.Comment) error
+	CreateComment(tx *gorm.DB, comment *model.Comment) error
 }
 
 type commentRepository struct {
@@ -18,8 +18,8 @@ func NewCommentRepository(db *gorm.DB) ICommentRepository {
 	return &commentRepository{db}
 }
 
-func (cr *commentRepository) CreateComment(comment *model.Comment) error {
-	if err := cr.db.Create(comment).Error; err != nil {
+func (cr *commentRepository) CreateComment(tx *gorm.DB, comment *model.Comment) error {
+	if err := tx.Create(comment).Error; err != nil {
 		return err
 	}
 	return nil

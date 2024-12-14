@@ -97,10 +97,10 @@ func NewRouter(
 	t.DELETE("/:tweetId", tc.DeleteTweet)
 
 	tid := t.Group("/:tweetId")
-	tid.POST("/favorite", fc.CreateFavorite)
+	tid.POST("/:visitedId/favorite", fc.CreateFavorite)
 	tid.DELETE("/favorite", fc.DeleteFavorite)
 
-	tid.POST("/retweet", rc.CreateRetweet)
+	tid.POST("/:visitedId/retweet", rc.CreateRetweet)
 	tid.DELETE("/retweet", rc.DeleteRetweet)
 
 	tid.POST("/bookmark", bc.CreateBookmark)
@@ -113,7 +113,7 @@ func NewRouter(
 	}))
 	b.GET("", bc.GetAllBookmarks)
 
-	c := e.Group("/comment")
+	c := e.Group("/:visitedId/comment")
 	c.Use(echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(os.Getenv("SECRET")),
 		TokenLookup: "cookie:token",

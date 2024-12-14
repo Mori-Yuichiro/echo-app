@@ -26,6 +26,8 @@ func main() {
 	commentValidator := validator.NewCommentValidator()
 	messageValidator := validator.NewMessageValidator()
 
+	notificationRepository := repository.NewNotificationRepository(db)
+
 	userRepository := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
 	userController := controller.NewUserController(userUsecase)
@@ -39,18 +41,20 @@ func main() {
 	tweetController := controller.NewTweetController(tweetUsecase)
 
 	favoriteRepository := repository.NewFavoriteRepository(db)
-	favoriteUsecase := usecase.NewFavoriteUsecase(favoriteRepository)
+	favoriteUsecase := usecase.NewFavoriteUsecase(favoriteRepository, notificationRepository, db)
 	favoriteController := controller.NewFavoriteController(favoriteUsecase)
 
 	commentRepository := repository.NewCommentRepository(db)
 	commentUsecase := usecase.NewCommentUsecase(
 		commentRepository,
 		commentValidator,
+		notificationRepository,
+		db,
 	)
 	commentController := controller.NewCommentController(commentUsecase)
 
 	retweetRepository := repository.NewRetweetRepository(db)
-	retweetUsecase := usecase.NewRetweetUsecase(retweetRepository)
+	retweetUsecase := usecase.NewRetweetUsecase(retweetRepository, notificationRepository, db)
 	retweetController := controller.NewRetweetController(retweetUsecase)
 
 	bookmarkRepository := repository.NewBookmarkRepository(db)

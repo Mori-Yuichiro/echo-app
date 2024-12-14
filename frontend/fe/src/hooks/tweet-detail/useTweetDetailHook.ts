@@ -34,7 +34,7 @@ export const useTweetDetailHook = () => {
             }
 
             const { status } = await instance.post(
-                "/comment",
+                `/${tweet?.user.id}/comment`,
                 {
                     ...data,
                     tweet_id: tweet?.id

@@ -15,7 +15,7 @@ export default function Tweet({ tweet }: { tweet: TweetType }) {
         onClickDeleteBookmark,
         deleteTweetModal,
         onClickDeleteTweetModal
-    } = useTweetHook(tweet.id);
+    } = useTweetHook(tweet);
 
     return (
         <>

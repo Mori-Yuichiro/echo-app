@@ -8,7 +8,7 @@ import (
 )
 
 type IFavoriteRepository interface {
-	CreateFavorite(favorite *model.Favorite) error
+	CreateFavorite(tx *gorm.DB, favorite *model.Favorite) error
 	DeleteFavorite(userId uint, tweetId uint) error
 }
 
@@ -20,8 +20,8 @@ func NewFavoriteRepository(db *gorm.DB) IFavoriteRepository {
 	return &favoriteRepository{db}
 }
 
-func (fr *favoriteRepository) CreateFavorite(favorite *model.Favorite) error {
-	if err := fr.db.Create(favorite).Error; err != nil {
+func (fr *favoriteRepository) CreateFavorite(tx *gorm.DB, favorite *model.Favorite) error {
+	if err := tx.Create(favorite).Error; err != nil {
 		return err
 	}
 	return nil
