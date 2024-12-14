@@ -100,7 +100,7 @@ func NewRouter(
 	tid.POST("/:visitedId/favorite", fc.CreateFavorite)
 	tid.DELETE("/favorite", fc.DeleteFavorite)
 
-	tid.POST("/retweet", rc.CreateRetweet)
+	tid.POST("/:visitedId/retweet", rc.CreateRetweet)
 	tid.DELETE("/retweet", rc.DeleteRetweet)
 
 	tid.POST("/bookmark", bc.CreateBookmark)

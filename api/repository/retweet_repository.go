@@ -8,7 +8,7 @@ import (
 )
 
 type IRetweetRepository interface {
-	CreateRetweet(retweet *model.Retweet) error
+	CreateRetweet(tx *gorm.DB, retweet *model.Retweet) error
 	DeleteRetweet(userId uint, tweetId uint) error
 }
 
@@ -20,8 +20,8 @@ func NewRetweetRepository(db *gorm.DB) IRetweetRepository {
 	return &retweetRepository{db}
 }
 
-func (rr *retweetRepository) CreateRetweet(retweet *model.Retweet) error {
-	if err := rr.db.Create(retweet).Error; err != nil {
+func (rr *retweetRepository) CreateRetweet(tx *gorm.DB, retweet *model.Retweet) error {
+	if err := tx.Create(retweet).Error; err != nil {
 		return err
 	}
 	return nil

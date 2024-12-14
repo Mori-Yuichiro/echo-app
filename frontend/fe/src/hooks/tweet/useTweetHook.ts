@@ -59,7 +59,7 @@ export const useTweetHook = (tweet: TweetType) => {
             }
 
             const { status } = await instance.post(
-                `/tweets/${tweet.id}/retweet`,
+                `/tweets/${tweet.id}/${tweet.user.id}/retweet`,
                 {},
                 { withCredentials: true }
             );

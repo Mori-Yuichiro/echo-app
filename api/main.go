@@ -54,7 +54,7 @@ func main() {
 	commentController := controller.NewCommentController(commentUsecase)
 
 	retweetRepository := repository.NewRetweetRepository(db)
-	retweetUsecase := usecase.NewRetweetUsecase(retweetRepository)
+	retweetUsecase := usecase.NewRetweetUsecase(retweetRepository, notificationRepository, db)
 	retweetController := controller.NewRetweetController(retweetUsecase)
 
 	bookmarkRepository := repository.NewBookmarkRepository(db)

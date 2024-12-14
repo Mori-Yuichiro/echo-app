@@ -39,7 +39,12 @@ func (rc *retweetController) CreateRetweet(c echo.Context) error {
 		TweetId: uint(tweetId),
 	}
 
-	retweetRes, err := rc.ru.CreateRetweet(retweet)
+	visitedId, err := strconv.ParseFloat(c.Param("visitedId"), 64)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	retweetRes, err := rc.ru.CreateRetweet(retweet, uint(visitedId))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
