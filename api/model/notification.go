@@ -13,10 +13,11 @@ type Notification struct {
 }
 
 type NotificationResponse struct {
-	ID        uint   `json:"id" gorm:"primaryKey"`
-	VisitorId uint   `json:"visitor_id" gorm:"not null"`
-	VisitedId uint   `json:"visited_id" gorm:"not null"`
-	TweetId   uint   `json:"tweet_id"`
-	Action    string `json:"action" gorm:"not null; default:''"`
-	Read      bool   `json:"read" gorm:"not null; default:false"`
+	ID        uint         `json:"id" gorm:"primaryKey"`
+	VisitorId uint         `json:"visitor_id" gorm:"not null"`
+	VisitedId uint         `json:"visited_id" gorm:"not null"`
+	TweetId   *uint        `json:"tweet_id"`
+	Action    string       `json:"action" gorm:"not null; default:''"`
+	Read      bool         `json:"read" gorm:"not null; default:false"`
+	Visitor   UserResponse `json:"visitor" gorm:"not null"`
 }

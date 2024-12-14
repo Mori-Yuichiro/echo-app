@@ -27,6 +27,7 @@ export const config = {
         "/profile\/([0-9]+)",
         "/bookmarks",
         "/rooms",
-        "/rooms\/([0-9]+)"
+        "/rooms\/([0-9]+)",
+        "/notifications"
     ]
 }
