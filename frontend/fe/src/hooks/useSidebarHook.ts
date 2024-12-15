@@ -4,6 +4,8 @@ import { useError } from "./error/useError";
 import { AxiosError } from "axios";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { changeCurrentUser } from "@/store/slice/slice";
+import { getCsrfToken } from "@/lib/csrf_lib";
+import { useRouter } from "next/navigation";
 
 type ItemListType = {
     label: string;
@@ -14,11 +16,30 @@ type ItemListType = {
 
 export const useSidebarHook = () => {
     const { instance } = axiosInstance();
+    const router = useRouter();
     const { switchErrorHandling } = useError();
     const currentUser = useAppSelector(state => state.slice.currentUser);
     const reload = useAppSelector(state => state.slice.reload);
     const dispatch = useAppDispatch();
 
+    const onClickLogout = async () => {
+        try {
+            if (instance.defaults.headers.common["X-CSRF-Token"] === undefined) {
+                const csrf = await getCsrfToken();
+                instance.defaults.headers.common["X-CSRF-Token"] = csrf;
+            }
+
+            const { status } = await instance.post(
+                "/logout",
+                {},
+                { withCredentials: true }
+            );
+
+            if (status === 200) router.push("/");
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     const ITEM_LIST: ItemListType[] = [
         {
@@ -118,5 +139,9 @@ export const useSidebarHook = () => {
         fetchData();
     }, [reload])
 
-    return { ITEM_LIST, currentUser };
+    return {
+        ITEM_LIST,
+        currentUser,
+        onClickLogout
+    };
 }
