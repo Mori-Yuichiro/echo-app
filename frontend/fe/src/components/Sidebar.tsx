@@ -5,7 +5,11 @@ import Button from "./Button";
 import { useSidebarHook } from "@/hooks/useSidebarHook";
 
 export default function Sidebar() {
-    const { ITEM_LIST, currentUser } = useSidebarHook();
+    const {
+        ITEM_LIST,
+        currentUser,
+        onClickLogout
+    } = useSidebarHook();
 
     return (
         <aside className="flex flex-col gap-3 h-screen max-lg:w-20 w-60 border-r border-black p-4 fixed max-sm:hidden overflow-y-auto">
@@ -36,6 +40,7 @@ export default function Sidebar() {
             <Button disabled className="rounded-full bg-cyan-400 py-2">Post</Button>
             <div
                 className="flex items-center gap-3 cursor-pointer"
+                onClick={onClickLogout}
             >
                 <div className="bg-slate-400 w-8 h-8 rounded-full">
                     {currentUser?.image && <img className="w-full h-full rounded-full" src={currentUser.image!} alt="icon" />}
